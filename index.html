@@ -511,7 +511,20 @@ function timeAgo(date) {
             document.getElementById(
                 "statusSelect"
             ).value;
+const lastReportKey = "lastReport_" + kebele;
+const lastReportTime = localStorage.getItem(lastReportKey);
 
+if (lastReportTime) {
+    const hoursPassed =
+        (Date.now() - Number(lastReportTime)) / (1000 * 60 * 60);
+
+    if (hoursPassed < 6) {
+        document.getElementById("message").textContent =
+            "⏳ You already reported this Kebele. Please try again later.";
+        document.getElementById("message").className = "message error";
+        return;
+    }
+}
 
         const button =
             document.getElementById(
@@ -558,6 +571,10 @@ function timeAgo(date) {
 
             message.textContent =
                 "✅ Your report has been recorded.";
+            localStorage.setItem(
+    "lastReport_" + kebele,
+    Date.now().toString()
+);
 
             message.className =
                 "message";
