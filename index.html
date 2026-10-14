@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Jijiga Electricity</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7f9;
+            color: #17202a;
+        }
+
+        header {
+            background: #0b5d4b;
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card strong {
+            display: block;
+            font-size: 28px;
+            margin-top: 8px;
+        }
+
+        .green {
+            color: #16803c;
+        }
+
+        .red {
+            color: #c62828;
+        }
+
+        .yellow {
+            color: #b77900;
+        }
+
+        .gray {
+            color: #667085;
+        }
+
+        .panel {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+
+        .panel h2 {
+            margin-top: 0;
+        }
+
+        .kebeles {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        .kebele {
+            border: 1px solid #e1e6ea;
+            border-radius: 10px;
+            padding: 14px;
+            background: white;
+        }
+
+        .kebele-name {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .on {
+            background: #dff6e7;
+            color: #126b34;
+        }
+
+        .off {
+            background: #fde3e3;
+            color: #a51f1f;
+        }
+
+        .unstable {
+            background: #fff0c7;
+            color: #875f00;
+        }
+
+        .unknown {
+            background: #edf0f2;
+            color: #667085;
+        }
+
+        select,
+        button {
+            width: 100%;
+            padding: 13px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccd3d8;
+            font-size: 16px;
+        }
+
+        button {
+            background: #0b5d4b;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .message {
+            color: #0b5d4b;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #667085;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            .summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .kebeles {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>⚡ Jijiga Electricity</h1>
+    <p>Electricity status for Jijiga city</p>
+</header>
+
+<main>
+
+    <div class="summary">
+
+        <div class="card green">
+            🟢 ON
+            <strong id="onCount">0</strong>
+        </div>
+
+        <div class="card red">
+            🔴 OFF
+            <strong id="offCount">0</strong>
+        </div>
+
+        <div class="card yellow">
+            🟡 UNSTABLE
+            <strong id="unstableCount">0</strong>
+        </div>
+
+        <div class="card gray">
+            ⚪ UNKNOWN
+            <strong id="unknownCount">20</strong>
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h2>🗺️ Jijiga Urban Kebeles</h2>
+
+        <p>
+            Check the latest reported electricity status in each Kebele.
+        </p>
+
+        <div class="kebeles" id="kebeles"></div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <h2>📍 Report Electricity Status</h2>
+
+        <label>Select your Kebele</label>
+
+        <select id="kebeleSelect"></select>
+
+
+        <label>What is the electricity situation?</label>
+
+        <select id="statusSelect">
+
+            <option value="on">
+                🟢 Electricity is ON
+            </option>
+
+            <option value="off">
+                🔴 Electricity is OFF
+            </option>
+
+            <option value="unstable">
+                🟡 Electricity is UNSTABLE
+            </option>
+
+        </select>
+
+
+        <button onclick="submitReport()">
+            Submit Report
+        </button>
+
+        <p id="message" class="message"></p>
+
+    </div>
+
+</main>
+
+
+<footer>
+    Jijiga Electricity © 2026
+</footer>
+
+
+<script>
+
+    const kebeles = [];
+
+    for (let i = 1; i <= 20; i++) {
+
+        kebeles.push(
+            "Kebele " + String(i).padStart(2, "0")
+        );
+
+    }
+
+
+    let reports =
+        JSON.parse(
+            localStorage.getItem("jijigaReports")
+        ) || [];
+
+
+    function getLatestReport(kebele) {
+
+        const results =
+            reports.filter(
+                report => report.kebele === kebele
+            );
+
+        if (results.length === 0) {
+            return null;
+        }
+
+        return results[results.length - 1];
+
+    }
+
+
+    function displayKebeles() {
+
+        const container =
+            document.getElementById("kebeles");
+
+        const select =
+            document.getElementById("kebeleSelect");
+
+        container.innerHTML = "";
+
+        select.innerHTML = "";
+
+
+        let on = 0;
+        let off = 0;
+        let unstable = 0;
+        let unknown = 0;
+
+
+        kebeles.forEach(kebele => {
+
+            const report =
+                getLatestReport(kebele);
+
+            let status =
+                report ? report.status : "unknown";
+
+
+            if (status === "on") on++;
+            if (status === "off") off++;
+            if (status === "unstable") unstable++;
+            if (status === "unknown") unknown++;
+
+
+            let text = "";
+
+            if (status === "on")
+                text = "🟢 ON";
+
+            if (status === "off")
+                text = "🔴 OFF";
+
+            if (status === "unstable")
+                text = "🟡 UNSTABLE";
+
+            if (status === "unknown")
+                text = "⚪ UNKNOWN";
+
+
+            const box =
+                document.createElement("div");
+
+            box.className = "kebele";
+
+
+            box.innerHTML = `
+                <div class="kebele-name">
+                    ${kebele}
+                </div>
+
+                <span class="status ${status}">
+                    ${text}
+                </span>
+            `;
+
+
+            container.appendChild(box);
+
+
+            const option =
+                document.createElement("option");
+
+            option.value = kebele;
+
+            option.textContent = kebele;
+
+            select.appendChild(option);
+
+        });
+
+
+        document.getElementById("onCount")
+            .textContent = on;
+
+        document.getElementById("offCount")
+            .textContent = off;
+
+        document.getElementById("unstableCount")
+            .textContent = unstable;
+
+        document.getElementById("unknownCount")
+            .textContent = unknown;
+
+    }
+
+
+    function submitReport() {
+
+        const kebele =
+            document.getElementById(
+                "kebeleSelect"
+            ).value;
+
+
+        const status =
+            document.getElementById(
+                "statusSelect"
+            ).value;
+
+
+        reports.push({
+
+            kebele: kebele,
+
+            status: status,
+
+            time: new Date().toISOString()
+
+        });
+
+
+        localStorage.setItem(
+            "jijigaReports",
+            JSON.stringify(reports)
+        );
+
+
+        document.getElementById(
+            "message"
+        ).textContent =
+            "✅ Your report has been recorded.";
+
+
+        displayKebeles();
+
+    }
+
+
+    displayKebeles();
+
+</script>
+
+</body>
+</html>
