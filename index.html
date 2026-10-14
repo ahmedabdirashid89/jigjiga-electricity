@@ -425,9 +425,11 @@ const unstableReports = recentReports.filter(r => r.status === "unstable").lengt
         ? `<div style="margin-top:8px;font-size:12px;color:#667085;">
             Reported ${timeAgo(report.created_at)}
             <br>
-           ${offReports > 0 ? 🔴 ${offReports} OFF : ""}
-${onReports > 0 ? 🟢 ${onReports} ON : ""}
+          <div>
+   ${offReports > 0 ? 🔴 ${offReports} OFF<br> : ""}
+${onReports > 0 ? 🟢 ${onReports} ON<br> : ""}
 ${unstableReports > 0 ? 🟡 ${unstableReports} UNSTABLE : ""}
+</div>
            </div>`
         : ""
     }
