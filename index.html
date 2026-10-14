@@ -369,16 +369,6 @@ function timeAgo(date) {
 
             const report =
                 getLatestReport(kebele);
-          const sixHoursAgo = Date.now() - (6 * 60 * 60 * 1000);
-
-const recentReports = reports.filter(r =>
-    r.kebele === kebele &&
-    new Date(r.created_at).getTime() >= sixHoursAgo
-);
-
-const offReports = recentReports.filter(r => r.status === "off").length;
-const onReports = recentReports.filter(r => r.status === "on").length;
-const unstableReports = recentReports.filter(r => r.status === "unstable").length;
 
             let status =
                 report ? report.status : "unknown";
@@ -411,7 +401,7 @@ const unstableReports = recentReports.filter(r => r.status === "unstable").lengt
             box.className = "kebele";
 
 
-         box.innerHTML = `
+           box.innerHTML = `
     <div class="kebele-name">
         ${kebele}
     </div>
@@ -424,12 +414,6 @@ const unstableReports = recentReports.filter(r => r.status === "unstable").lengt
         report
         ? `<div style="margin-top:8px;font-size:12px;color:#667085;">
             Reported ${timeAgo(report.created_at)}
-            <br>
-          <div>
- ${offReports > 0 ? 🔴 ${offReports} OFF<br>` : ""}
-${onReports > 0 ? 🟢 ${onReports} ON<br>` : ""}
-${unstableReports > 0 ? 🟡 ${unstableReports} UNSTABLE` : ""}
-</div>
            </div>`
         : ""
     }
@@ -522,20 +506,7 @@ ${unstableReports > 0 ? 🟡 ${unstableReports} UNSTABLE` : ""}
             document.getElementById(
                 "statusSelect"
             ).value;
-const lastReportKey = "lastReport_" + kebele;
-const lastReportTime = localStorage.getItem(lastReportKey);
 
-if (lastReportTime) {
-    const hoursPassed =
-        (Date.now() - Number(lastReportTime)) / (1000 * 60 * 60);
-
-    if (hoursPassed < 6) {
-        document.getElementById("message").textContent =
-            "⏳ You already reported this Kebele. Please try again later.";
-        document.getElementById("message").className = "message error";
-        return;
-    }
-}
 
         const button =
             document.getElementById(
@@ -582,10 +553,6 @@ if (lastReportTime) {
 
             message.textContent =
                 "✅ Your report has been recorded.";
-            localStorage.setItem(
-    "lastReport_" + kebele,
-    Date.now().toString()
-);
 
             message.className =
                 "message";
