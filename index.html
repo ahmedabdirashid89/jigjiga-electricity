@@ -379,15 +379,23 @@
             box.className = "kebele";
 
 
-            box.innerHTML = `
-                <div class="kebele-name">
-                    ${kebele}
-                </div>
+           box.innerHTML = `
+    <div class="kebele-name">
+        ${kebele}
+    </div>
 
-                <span class="status ${status}">
-                    ${text}
-                </span>
-            `;
+    <span class="status ${status}">
+        ${text}
+    </span>
+
+    ${
+        report
+        ? `<div style="margin-top:8px;font-size:12px;color:#667085;">
+            Reported: ${new Date(report.created_at).toLocaleString()}
+           </div>`
+        : ""
+    }
+`;
 
 
             container.appendChild(box);
