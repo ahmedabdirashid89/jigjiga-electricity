@@ -61,21 +61,10 @@
             margin-top: 8px;
         }
 
-        .green {
-            color: #16803c;
-        }
-
-        .red {
-            color: #c62828;
-        }
-
-        .yellow {
-            color: #b77900;
-        }
-
-        .gray {
-            color: #667085;
-        }
+        .green { color: #16803c; }
+        .red { color: #c62828; }
+        .yellow { color: #b77900; }
+        .gray { color: #667085; }
 
         .panel {
             background: white;
@@ -154,9 +143,17 @@
             cursor: pointer;
         }
 
+        button:disabled {
+            background: #999;
+        }
+
         .message {
             color: #0b5d4b;
             font-weight: bold;
+        }
+
+        .error {
+            color: #c62828;
         }
 
         footer {
@@ -211,7 +208,6 @@
 
     </div>
 
-
     <div class="panel">
 
         <h2>🗺️ Jijiga Urban Kebeles</h2>
@@ -224,7 +220,6 @@
 
     </div>
 
-
     <div class="panel">
 
         <h2>📍 Report Electricity Status</h2>
@@ -232,7 +227,6 @@
         <label>Select your Kebele</label>
 
         <select id="kebeleSelect"></select>
-
 
         <label>What is the electricity situation?</label>
 
@@ -252,8 +246,7 @@
 
         </select>
 
-
-        <button onclick="submitReport()">
+        <button id="submitButton" onclick="submitReport()">
             Submit Report
         </button>
 
@@ -263,13 +256,35 @@
 
 </main>
 
-
 <footer>
     Jijiga Electricity © 2026
 </footer>
 
+<!-- Supabase library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+
+    // ==========================================
+    // SUPABASE CONNECTION
+    // ==========================================
+
+    const SUPABASE_URL =
+        "https://wvenavpgdlbrlqpnqjlb.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+       sb_publishable_4utSOBVLpg1hPvXb9GtkzA_c9_bUxcu
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
+
+
+    // ==========================================
+    // KEBELES
+    // ==========================================
 
     const kebeles = [];
 
@@ -282,10 +297,11 @@
     }
 
 
-    let reports =
-        JSON.parse(
-            localStorage.getItem("jijigaReports")
-        ) || [];
+    // ==========================================
+    // REPORTS
+    // ==========================================
+
+    let reports = [];
 
 
     function getLatestReport(kebele) {
@@ -303,6 +319,10 @@
 
     }
 
+
+    // ==========================================
+    // DISPLAY KEBELES
+    // ==========================================
 
     function displayKebeles() {
 
@@ -400,7 +420,51 @@
     }
 
 
-    function submitReport() {
+    // ==========================================
+    // LOAD REPORTS FROM SUPABASE
+    // ==========================================
+
+    async function loadReports() {
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .from("reports")
+            .select("*")
+            .order("created_at", {
+                ascending: true
+            });
+
+
+        if (error) {
+
+            console.error(error);
+
+            document.getElementById("message")
+                .textContent =
+                "⚠️ Could not load reports.";
+
+            document.getElementById("message")
+                .className =
+                "message error";
+
+            return;
+        }
+
+
+        reports = data || [];
+
+        displayKebeles();
+
+    }
+
+
+    // ==========================================
+    // SUBMIT REPORT
+    // ==========================================
+
+    async function submitReport() {
 
         const kebele =
             document.getElementById(
@@ -414,35 +478,97 @@
             ).value;
 
 
-        reports.push({
-
-            kebele: kebele,
-
-            status: status,
-
-            time: new Date().toISOString()
-
-        });
+        const button =
+            document.getElementById(
+                "submitButton"
+            );
 
 
-        localStorage.setItem(
-            "jijigaReports",
-            JSON.stringify(reports)
-        );
+        const message =
+            document.getElementById(
+                "message"
+            );
 
 
-        document.getElementById(
-            "message"
-        ).textContent =
-            "✅ Your report has been recorded.";
+        button.disabled = true;
+
+        button.textContent =
+            "Submitting...";
 
 
-        displayKebeles();
+        const {
+            error
+        } = await supabaseClient
+            .from("reports")
+            .insert({
+
+                kebele: kebele,
+
+                status: status
+
+            });
+
+
+        if (error) {
+
+            console.error(error);
+
+            message.textContent =
+                "❌ Report could not be submitted.";
+
+            message.className =
+                "message error";
+
+        } else {
+
+            message.textContent =
+                "✅ Your report has been recorded.";
+
+            message.className =
+                "message";
+
+            await loadReports();
+
+        }
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "Submit Report";
 
     }
 
 
+    // ==========================================
+    // REAL-TIME UPDATES
+    // ==========================================
+
+    supabaseClient
+        .channel("reports-realtime")
+        .on(
+            "postgres_changes",
+            {
+                event: "*",
+                schema: "public",
+                table: "reports"
+            },
+            function () {
+
+                loadReports();
+
+            }
+        )
+        .subscribe();
+
+
+    // ==========================================
+    // START WEBSITE
+    // ==========================================
+
     displayKebeles();
+
+    loadReports();
 
 </script>
 
