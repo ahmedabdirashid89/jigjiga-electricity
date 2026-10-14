@@ -426,9 +426,9 @@ const unstableReports = recentReports.filter(r => r.status === "unstable").lengt
             Reported ${timeAgo(report.created_at)}
             <br>
           <div>
-   ${offReports > 0 ? 🔴 ${offReports} OFF<br> : ""}
-${onReports > 0 ? 🟢 ${onReports} ON<br> : ""}
-${unstableReports > 0 ? 🟡 ${unstableReports} UNSTABLE : ""}
+ ${offReports > 0 ? 🔴 ${offReports} OFF<br>` : ""}
+${onReports > 0 ? 🟢 ${onReports} ON<br>` : ""}
+${unstableReports > 0 ? 🟡 ${unstableReports} UNSTABLE` : ""}
 </div>
            </div>`
         : ""
