@@ -369,6 +369,9 @@ function timeAgo(date) {
 
             const report =
                 getLatestReport(kebele);
+            const reportCount = reports.filter(
+    r => r.kebele === kebele
+).length;
 
             let status =
                 report ? report.status : "unknown";
@@ -401,7 +404,7 @@ function timeAgo(date) {
             box.className = "kebele";
 
 
-           box.innerHTML = `
+         box.innerHTML = `
     <div class="kebele-name">
         ${kebele}
     </div>
@@ -414,6 +417,8 @@ function timeAgo(date) {
         report
         ? `<div style="margin-top:8px;font-size:12px;color:#667085;">
             Reported ${timeAgo(report.created_at)}
+            <br>
+            ${reportCount} ${reportCount === 1 ? "report" : "reports"}
            </div>`
         : ""
     }
