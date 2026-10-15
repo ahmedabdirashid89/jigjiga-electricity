@@ -382,6 +382,26 @@ function getLatestReport(kebele) {
 ---------------------------- */
 
 function displayKebeles() {
+    const kebeleSearch =
+    document.getElementById("kebeleSearch");
+
+kebeleSearch.addEventListener("input", function () {
+    const searchText =
+        kebeleSearch.value.toLowerCase();
+
+    const cards =
+        document.querySelectorAll("#kebeles > div");
+
+    cards.forEach(function (card) {
+        const text =
+            card.textContent.toLowerCase();
+
+        card.style.display =
+            text.includes(searchText)
+                ? ""
+                : "none";
+    });
+});
 
     const container =
         document.getElementById("kebeles");
