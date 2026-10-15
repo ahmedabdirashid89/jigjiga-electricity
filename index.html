@@ -222,6 +222,9 @@ footer {
         ⚪ UNKNOWN
         <strong id="unknownCount">20</strong>
     </div>
+    <p id="lastUpdated" style="text-align:center;font-size:14px;color:#667085;">
+    Last updated: Loading...
+</p>
 </div>
 <div class="panel">
     <h2>🗺️ Jijiga Electricity Map</h2>
@@ -229,7 +232,7 @@ footer {
 </div>
 <div class="panel">
 
-    <h2>🗺️ Jijiga Urban Kebeles</h2>
+    <h2>📍 Jijiga Urban Kebeles</h2>
 
     <p>
         Check the latest reported electricity status in each Kebele.
@@ -647,6 +650,14 @@ async function loadReports() {
 
 
     reports = data || [];
+    const lastUpdated =
+    document.getElementById("lastUpdated");
+
+if (lastUpdated) {
+    lastUpdated.textContent =
+        "Last updated: " +
+        new Date().toLocaleString();
+}
 
     displayKebeles();
 }
