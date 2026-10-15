@@ -6,131 +6,303 @@
 
 <title>Jijiga Electricity</title>
 
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
 <style>
 * {
     box-sizing: border-box;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f7f9;
-    color: #17202a;
+:root {
+    --primary: #087f5b;
+    --primary-dark: #056044;
+    --primary-light: #e8f7f1;
+    --green: #16803c;
+    --red: #c62828;
+    --yellow: #b77900;
+    --gray: #667085;
+    --dark: #17202a;
+    --muted: #667085;
+    --background: #f4f7f9;
+    --white: #ffffff;
+    --border: #e4e9ed;
+    --shadow: 0 8px 25px rgba(16, 24, 40, 0.08);
 }
 
+body {
+    margin: 0;
+    font-family:
+        Arial,
+        "Segoe UI",
+        sans-serif;
+    background: var(--background);
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+/* =========================
+   HEADER
+========================= */
+
 header {
-    background: #0b5d4b;
+    background:
+        linear-gradient(
+            135deg,
+            #087f5b,
+            #056044
+        );
+
     color: white;
-    padding: 25px 20px;
+    padding: 18px 20px 65px;
+}
+
+.navbar {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.brand {
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.language-button {
+    width: auto;
+    margin: 0;
+    padding: 8px 14px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.12);
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.hero {
+    max-width: 1100px;
+    margin: 45px auto 0;
     text-align: center;
 }
 
-header h1 {
-    margin: 0 0 8px;
-    font-size: 30px;
+.hero h1 {
+    margin: 0 0 12px;
+    font-size: 42px;
+    line-height: 1.15;
 }
 
-header p {
-    margin: 0;
+.hero p {
+    margin: 0 auto;
+    max-width: 650px;
+    font-size: 18px;
+    opacity: 0.94;
 }
+
+/* =========================
+   MAIN
+========================= */
 
 main {
-    max-width: 1000px;
-    margin: auto;
-    padding: 20px;
+    max-width: 1100px;
+    margin: -35px auto 0;
+    padding: 0 18px 40px;
+}
+
+/* =========================
+   SUMMARY
+========================= */
+
+.summary-wrapper {
+    position: relative;
+    z-index: 5;
 }
 
 .summary {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
+    gap: 14px;
 }
 
 .card {
     background: white;
-    padding: 18px;
-    border-radius: 12px;
+    padding: 20px 15px;
+    border-radius: 16px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,0.7);
+}
+
+.card-label {
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .card strong {
     display: block;
-    font-size: 28px;
-    margin-top: 8px;
+    font-size: 32px;
+    margin-top: 5px;
 }
 
 .green {
-    color: #16803c;
+    color: var(--green);
 }
 
 .red {
-    color: #c62828;
+    color: var(--red);
 }
 
 .yellow {
-    color: #b77900;
+    color: var(--yellow);
 }
 
 .gray {
-    color: #667085;
+    color: var(--gray);
 }
+
+.last-updated {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin: 14px 0 22px;
+}
+
+/* =========================
+   PANELS
+========================= */
 
 .panel {
     background: white;
-    padding: 20px;
-    border-radius: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    margin-bottom: 20px;
+    padding: 24px;
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    margin-bottom: 22px;
+    border: 1px solid var(--border);
 }
 
 .panel h2 {
     margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 23px;
 }
+
+.panel-description {
+    color: var(--muted);
+    margin-top: 0;
+}
+
+/* =========================
+   MAP
+========================= */
+
+#map {
+    height: 480px;
+    width: 100%;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.map-legend {
+    background: white;
+    padding: 12px 14px;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+    line-height: 1.8;
+    font-size: 13px;
+}
+
+.map-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.map-note {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box {
+    position: relative;
+    margin: 18px 0;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    font-size: 16px;
+    outline: none;
+}
+
+.search-box input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(8,127,91,0.1);
+}
+
+/* =========================
+   KEBELES
+========================= */
 
 .kebeles {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 12px;
 }
 
 .kebele {
-    border: 1px solid #e1e6ea;
-    border-radius: 10px;
-    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
     background: white;
+    transition: 0.2s ease;
+}
+
+.kebele:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 16px rgba(16,24,40,0.08);
 }
 
 .kebele-name {
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    font-size: 15px;
 }
 
 .status {
     display: inline-block;
-    padding: 6px 10px;
+    padding: 6px 11px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: bold;
 }
 
-.on {
+.status.on {
     background: #dff6e7;
     color: #126b34;
 }
 
-.off {
+.status.off {
     background: #fde3e3;
     color: #a51f1f;
 }
 
-.unstable {
+.status.unstable {
     background: #fff0c7;
     color: #875f00;
 }
 
-.unknown {
+.status.unknown {
     background: #edf0f2;
     color: #667085;
 }
@@ -138,50 +310,235 @@ main {
 .recent-reports {
     margin-top: 10px;
     font-size: 12px;
-    color: #667085;
+    color: var(--muted);
     line-height: 1.7;
 }
 
-select,
-button {
+/* =========================
+   REPORTING
+========================= */
+
+.report-box {
+    background: linear-gradient(
+        135deg,
+        #f1fbf7,
+        #ffffff
+    );
+
+    border: 1px solid #d9eee6;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 14px;
+    margin-bottom: 6px;
+}
+
+select {
     width: 100%;
-    padding: 13px;
-    margin-top: 8px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    border: 1px solid #ccd3d8;
+    padding: 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
     font-size: 16px;
+    background: white;
 }
 
 button {
-    background: #0b5d4b;
-    color: white;
+    width: 100%;
+    padding: 14px;
+    margin-top: 18px;
+    border-radius: 10px;
     border: none;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.2s ease;
+}
+
+button:hover {
+    background: var(--primary-dark);
 }
 
 button:disabled {
     background: #999;
+    cursor: not-allowed;
 }
 
 .message {
-    color: #0b5d4b;
-    font-weight: bold;
-}
-
-.error {
-    color: #c62828;
-}
-
-footer {
     text-align: center;
-    padding: 25px;
-    color: #667085;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.message.error {
+    color: var(--red);
+}
+
+.message.success {
+    color: var(--green);
+}
+
+/* =========================
+   HOW IT WORKS
+========================= */
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.step {
+    background: #f8fafb;
+    border: 1px solid var(--border);
+    padding: 18px;
+    border-radius: 14px;
+}
+
+.step-number {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.step h3 {
+    margin: 0 0 5px;
+    font-size: 16px;
+}
+
+.step p {
+    margin: 0;
+    color: var(--muted);
     font-size: 13px;
 }
 
-@media (max-width: 700px) {
+/* =========================
+   STATISTICS
+========================= */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.stat-box {
+    background: #f8fafb;
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.stat-box strong {
+    display: block;
+    font-size: 28px;
+    color: var(--primary);
+}
+
+.stat-box span {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* =========================
+   HISTORY
+========================= */
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 15px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: #fafbfc;
+}
+
+.history-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.history-kebele {
+    font-weight: bold;
+}
+
+.history-time {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.history-status {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* =========================
+   TRUST
+========================= */
+
+.trust {
+    background: #f8fafb;
+    border-left: 4px solid var(--primary);
+    padding: 16px;
+    border-radius: 10px;
+    color: #475467;
+}
+
+.trust strong {
+    color: var(--dark);
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty {
+    text-align: center;
+    padding: 25px;
+    color: var(--muted);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    background: #102a24;
+    color: #d7e5e1;
+    text-align: center;
+    padding: 30px 20px;
+    font-size: 13px;
+}
+
+footer strong {
+    color: white;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 850px) {
+
     .summary {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -189,104 +546,568 @@ footer {
     .kebeles {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .steps {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    header {
+        padding-bottom: 55px;
+    }
+
+    .navbar {
+        align-items: flex-start;
+    }
+
+    .hero {
+        margin-top: 35px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    main {
+        padding: 0 12px 30px;
+    }
+
+    .summary {
+        gap: 9px;
+    }
+
+    .card {
+        padding: 15px 8px;
+    }
+
+    .card strong {
+        font-size: 27px;
+    }
+
+    .panel {
+        padding: 18px;
+        border-radius: 15px;
+    }
+
+    #map {
+        height: 400px;
+    }
+
+    .kebeles {
+        grid-template-columns: 1fr;
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .history-item {
+        align-items: flex-start;
+    }
 }
 </style>
 </head>
 
 <body>
 
+<!-- =========================
+     HEADER / HOMEPAGE
+========================= -->
+
 <header>
-    <h1>⚡ Jijiga Electricity</h1>
-    <p>Electricity status for Jijiga city</p>
+
+    <div class="navbar">
+
+        <div class="brand">
+            ⚡ Jijiga Electricity
+        </div>
+
+        <button
+            class="language-button"
+            id="languageButton"
+            onclick="toggleLanguage()"
+        >
+            Soomaali
+        </button>
+
+    </div>
+
+    <div class="hero">
+
+        <h1 data-i18n="heroTitle">
+            Electricity Status in Jijiga
+        </h1>
+
+        <p data-i18n="heroText">
+            Check recent community-reported electricity conditions
+            across Jijiga's Kebeles.
+        </p>
+
+    </div>
+
 </header>
+
 
 <main>
 
-<div class="summary">
-    <div class="card green">
-        🟢 ON
-        <strong id="onCount">0</strong>
+<!-- =========================
+     SUMMARY
+========================= -->
+
+<div class="summary-wrapper">
+
+    <div class="summary">
+
+        <div class="card green">
+            <div class="card-label" data-i18n="on">
+                🟢 ON
+            </div>
+
+            <strong id="onCount">0</strong>
+        </div>
+
+
+        <div class="card red">
+            <div class="card-label" data-i18n="off">
+                🔴 OFF
+            </div>
+
+            <strong id="offCount">0</strong>
+        </div>
+
+
+        <div class="card yellow">
+            <div class="card-label" data-i18n="unstable">
+                🟡 UNSTABLE
+            </div>
+
+            <strong id="unstableCount">0</strong>
+        </div>
+
+
+        <div class="card gray">
+            <div class="card-label" data-i18n="unknown">
+                ⚪ UNKNOWN
+            </div>
+
+            <strong id="unknownCount">20</strong>
+        </div>
+
     </div>
 
-    <div class="card red">
-        🔴 OFF
-        <strong id="offCount">0</strong>
+    <div
+        class="last-updated"
+        id="lastUpdated"
+    >
+        Last updated: Loading...
     </div>
 
-    <div class="card yellow">
-        🟡 UNSTABLE
-        <strong id="unstableCount">0</strong>
-    </div>
-
-    <div class="card gray">
-        ⚪ UNKNOWN
-        <strong id="unknownCount">20</strong>
-    </div>
-    <p id="lastUpdated" style="text-align:center;font-size:14px;color:#667085;">
-    Last updated: Loading...
-</p>
 </div>
+
+
+<!-- =========================
+     MAP
+========================= -->
+
 <div class="panel">
-    <h2>🗺️ Jijiga Electricity Map</h2>
-    <div id="map" style="height:400px;border-radius:12px;"></div>
+
+    <div class="map-title">
+
+        <div>
+            <h2 data-i18n="mapTitle">
+                🗺️ Jijiga Electricity Map
+            </h2>
+
+            <div
+                class="map-note"
+                data-i18n="mapNote"
+            >
+                Recent community reports are used to show
+                current status.
+            </div>
+        </div>
+
+    </div>
+
+    <div
+        id="map"
+        style="margin-top:15px;"
+    ></div>
+
 </div>
+
+
+<!-- =========================
+     KEBELES
+========================= -->
+
 <div class="panel">
 
-    <h2>📍 Jijiga Urban Kebeles</h2>
+    <h2 data-i18n="kebeleTitle">
+        📍 Jijiga Urban Kebeles
+    </h2>
 
-    <p>
-        Check the latest reported electricity status in each Kebele.
+    <p
+        class="panel-description"
+        data-i18n="kebeleDescription"
+    >
+        Check the latest reported electricity status
+        in each Kebele.
     </p>
-<input
-    type="text"
-    id="kebeleSearch"
-    placeholder="🔎 Search Kebele..."
-    style="width:100%;padding:12px;margin:10px 0 15px;border:1px solid #ddd;border-radius:8px;font-size:16px;"
->
-    <div class="kebeles" id="kebeles"></div>
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="kebeleSearch"
+            placeholder="🔎 Search Kebele..."
+        >
+
+    </div>
+
+    <div
+        class="kebeles"
+        id="kebeles"
+    ></div>
 
 </div>
 
-<div class="panel">
 
-    <h2>📍 Report Electricity Status</h2>
+<!-- =========================
+     REPORT
+========================= -->
 
-    <label>Select your Kebele</label>
+<div class="panel report-box">
+
+    <h2 data-i18n="reportTitle">
+        📢 Report Electricity Status
+    </h2>
+
+    <p
+        class="panel-description"
+        data-i18n="reportDescription"
+    >
+        Help your community by reporting the current
+        electricity situation in your Kebele.
+    </p>
+
+    <label data-i18n="selectKebele">
+        Select your Kebele
+    </label>
 
     <select id="kebeleSelect"></select>
 
-    <label>What is the electricity situation?</label>
+
+    <label data-i18n="selectStatus">
+        What is the electricity situation?
+    </label>
 
     <select id="statusSelect">
-        <option value="on">🟢 Electricity is ON</option>
-        <option value="off">🔴 Electricity is OFF</option>
-        <option value="unstable">🟡 Electricity is UNSTABLE</option>
+
+        <option
+            value="on"
+            data-i18n="statusOn"
+        >
+            🟢 Electricity is ON
+        </option>
+
+        <option
+            value="off"
+            data-i18n="statusOff"
+        >
+            🔴 Electricity is OFF
+        </option>
+
+        <option
+            value="unstable"
+            data-i18n="statusUnstable"
+        >
+            🟡 Electricity is UNSTABLE
+        </option>
+
     </select>
 
-    <button id="submitButton" onclick="submitReport()">
+
+    <button
+        id="submitButton"
+        onclick="submitReport()"
+        data-i18n="submit"
+    >
         Submit Report
     </button>
 
-    <p id="message" class="message"></p>
+    <p
+        id="message"
+        class="message"
+    ></p>
+
+</div>
+
+
+<!-- =========================
+     STATISTICS
+========================= -->
+
+<div class="panel">
+
+    <h2 data-i18n="statsTitle">
+        📊 Electricity Statistics
+    </h2>
+
+    <p
+        class="panel-description"
+        data-i18n="statsDescription"
+    >
+        A quick overview of community reports.
+    </p>
+
+    <div class="stats-grid">
+
+        <div class="stat-box">
+
+            <strong id="totalReports">
+                0
+            </strong>
+
+            <span data-i18n="totalReports">
+                Total reports
+            </span>
+
+        </div>
+
+
+        <div class="stat-box">
+
+            <strong id="recentReportsTotal">
+                0
+            </strong>
+
+            <span data-i18n="recentReports">
+                Reports in last 6 hours
+            </span>
+
+        </div>
+
+
+        <div class="stat-box">
+
+            <strong id="activeKebeles">
+                0
+            </strong>
+
+            <span data-i18n="activeKebeles">
+                Kebeles with recent reports
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     HOW IT WORKS
+========================= -->
+
+<div class="panel">
+
+    <h2 data-i18n="howTitle">
+        ℹ️ How It Works
+    </h2>
+
+    <p
+        class="panel-description"
+        data-i18n="howDescription"
+    >
+        The website uses recent community reports to
+        provide a simple view of electricity conditions.
+    </p>
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-number">
+                1
+            </div>
+
+            <h3 data-i18n="step1Title">
+                Choose your Kebele
+            </h3>
+
+            <p data-i18n="step1Text">
+                Select the Kebele where you are currently
+                observing the electricity situation.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                2
+            </div>
+
+            <h3 data-i18n="step2Title">
+                Report the status
+            </h3>
+
+            <p data-i18n="step2Text">
+                Tell the community whether electricity is
+                ON, OFF, or UNSTABLE.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                3
+            </div>
+
+            <h3 data-i18n="step3Title">
+                Recent reports count
+            </h3>
+
+            <p data-i18n="step3Text">
+                Reports from the last six hours are used
+                for the current Kebele status.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                4
+            </div>
+
+            <h3 data-i18n="step4Title">
+                Community information
+            </h3>
+
+            <p data-i18n="step4Text">
+                The information helps residents understand
+                recent electricity conditions.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     HISTORY
+========================= -->
+
+<div class="panel">
+
+    <h2 data-i18n="historyTitle">
+        📈 Electricity Report History
+    </h2>
+
+    <p
+        class="panel-description"
+        data-i18n="historyDescription"
+    >
+        Recent submitted reports are shown below.
+    </p>
+
+    <div
+        class="history-list"
+        id="historyList"
+    ></div>
+
+</div>
+
+
+<!-- =========================
+     TRUST
+========================= -->
+
+<div class="panel">
+
+    <h2 data-i18n="trustTitle">
+        🛡️ Trust & Transparency
+    </h2>
+
+    <div class="trust">
+
+        <p data-i18n="trustText">
+            <strong>Important:</strong>
+            Electricity statuses shown on this website
+            are community reports. They are not official
+            electricity-company announcements.
+        </p>
+
+        <p data-i18n="trustText2">
+            Recent reports are used to determine the
+            current displayed status. Information can be
+            incomplete or inaccurate, so residents should
+            use it as a community information tool rather
+            than an official outage notice.
+        </p>
+
+    </div>
 
 </div>
 
 </main>
 
+
 <footer>
-    Jijiga Electricity © 2026
+
+    <strong>
+        ⚡ Jijiga Electricity
+    </strong>
+
+    <br>
+
+    <span data-i18n="footerText">
+        Community-powered electricity information for Jijiga.
+    </span>
+
+    <br><br>
+
+    © 2026 Jijiga Electricity
+
 </footer>
-<link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+
 
 <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
 
 <script>
+
+/* =====================================================
+   SUPABASE
+===================================================== */
 
 const SUPABASE_URL =
     "https://wvenavpgdlbrlqpnqjlb.supabase.co";
@@ -301,116 +1122,583 @@ const supabaseClient =
     );
 
 
+/* =====================================================
+   KEBELES
+===================================================== */
+
 const kebeles = [];
 
 for (let i = 1; i <= 20; i++) {
+
     kebeles.push(
-        "Kebele " + String(i).padStart(2, "0")
+        "Kebele " +
+        String(i).padStart(2, "0")
     );
+
 }
 
 
 let reports = [];
 
 
-/* ---------------------------
+/* =====================================================
+   LANGUAGE
+===================================================== */
+
+let currentLanguage = "en";
+
+
+const translations = {
+
+    en: {
+
+        heroTitle:
+            "Electricity Status in Jijiga",
+
+        heroText:
+            "Check recent community-reported electricity conditions across Jijiga's Kebeles.",
+
+        on:
+            "🟢 ON",
+
+        off:
+            "🔴 OFF",
+
+        unstable:
+            "🟡 UNSTABLE",
+
+        unknown:
+            "⚪ UNKNOWN",
+
+        mapTitle:
+            "🗺️ Jijiga Electricity Map",
+
+        mapNote:
+            "Recent community reports are used to show current status.",
+
+        kebeleTitle:
+            "📍 Jijiga Urban Kebeles",
+
+        kebeleDescription:
+            "Check the latest reported electricity status in each Kebele.",
+
+        reportTitle:
+            "📢 Report Electricity Status",
+
+        reportDescription:
+            "Help your community by reporting the current electricity situation in your Kebele.",
+
+        selectKebele:
+            "Select your Kebele",
+
+        selectStatus:
+            "What is the electricity situation?",
+
+        statusOn:
+            "🟢 Electricity is ON",
+
+        statusOff:
+            "🔴 Electricity is OFF",
+
+        statusUnstable:
+            "🟡 Electricity is UNSTABLE",
+
+        submit:
+            "Submit Report",
+
+        statsTitle:
+            "📊 Electricity Statistics",
+
+        statsDescription:
+            "A quick overview of community reports.",
+
+        totalReports:
+            "Total reports",
+
+        recentReports:
+            "Reports in last 6 hours",
+
+        activeKebeles:
+            "Kebeles with recent reports",
+
+        howTitle:
+            "ℹ️ How It Works",
+
+        howDescription:
+            "The website uses recent community reports to provide a simple view of electricity conditions.",
+
+        step1Title:
+            "Choose your Kebele",
+
+        step1Text:
+            "Select the Kebele where you are currently observing the electricity situation.",
+
+        step2Title:
+            "Report the status",
+
+        step2Text:
+            "Tell the community whether electricity is ON, OFF, or UNSTABLE.",
+
+        step3Title:
+            "Recent reports count",
+
+        step3Text:
+            "Reports from the last six hours are used for the current Kebele status.",
+
+        step4Title:
+            "Community information",
+
+        step4Text:
+            "The information helps residents understand recent electricity conditions.",
+
+        historyTitle:
+            "📈 Electricity Report History",
+
+        historyDescription:
+            "Recent submitted reports are shown below.",
+
+        trustTitle:
+            "🛡️ Trust & Transparency",
+
+        trustText:
+            "Important: Electricity statuses shown on this website are community reports. They are not official electricity-company announcements.",
+
+        trustText2:
+            "Recent reports are used to determine the current displayed status. Information can be incomplete or inaccurate, so residents should use it as a community information tool rather than an official outage notice.",
+
+        footerText:
+            "Community-powered electricity information for Jijiga."
+
+    },
+
+
+    so: {
+
+        heroTitle:
+            "Xaaladda Korontada Jigjiga",
+
+        heroText:
+            "Ka eeg warbixinnada bulshada ee ugu dambeeyay ee xaaladda korontada xaafadaha Jigjiga.",
+
+        on:
+            "🟢 SHIDAN",
+
+        off:
+            "🔴 DAMAN",
+
+        unstable:
+            "🟡 AAN DEGGANAYN",
+
+        unknown:
+            "⚪ LAMA OGA",
+
+        mapTitle:
+            "🗺️ Khariidadda Korontada Jigjiga",
+
+        mapNote:
+            "Xaaladda waxaa lagu muujinayaa warbixinnada bulshada ee ugu dambeeyay.",
+
+        kebeleTitle:
+            "📍 Kebellada Jigjiga",
+
+        kebeleDescription:
+            "Eeg xaaladdii koronto ee ugu dambaysay ee Kebele kasta.",
+
+        reportTitle:
+            "📢 Soo Gudbi Xaaladda Korontada",
+
+        reportDescription:
+            "Ka caawi bulshada adigoo soo gudbinaya xaaladda korontada ee Kebele-kaaga.",
+
+        selectKebele:
+            "Dooro Kebele-kaaga",
+
+        selectStatus:
+            "Sidee tahay xaaladda korontadu?",
+
+        statusOn:
+            "🟢 Korontadu way shidan tahay",
+
+        statusOff:
+            "🔴 Korontadu way dansan tahay",
+
+        statusUnstable:
+            "🟡 Korontadu ma deggana",
+
+        submit:
+            "Soo Gudbi Warbixin",
+
+        statsTitle:
+            "📊 Tirakoobka Korontada",
+
+        statsDescription:
+            "Dulmar kooban oo ku saabsan warbixinnada bulshada.",
+
+        totalReports:
+            "Warbixinnada oo dhan",
+
+        recentReports:
+            "Warbixinnada 6-dii saacadood ee ugu dambaysay",
+
+        activeKebeles:
+            "Kebello leh warbixin dhowaan",
+
+        howTitle:
+            "ℹ️ Sida uu u shaqeeyo",
+
+        howDescription:
+            "Website-ku wuxuu isticmaalaa warbixinnada bulshada ee ugu dambeeyay si uu u muujiyo xaaladda korontada.",
+
+        step1Title:
+            "Dooro Kebele-kaaga",
+
+        step1Text:
+            "Dooro Kebele-ka aad hadda joogto oo aad ka ogtahay xaaladda korontada.",
+
+        step2Title:
+            "Soo gudbi xaaladda",
+
+        step2Text:
+            "U sheeg bulshada haddii korontadu shidan tahay, dansan tahay, ama aan degganayn.",
+
+        step3Title:
+            "Warbixinnada dhow",
+
+        step3Text:
+            "Warbixinnada 6-dii saacadood ee ugu dambaysay ayaa loo isticmaalaa xaaladda hadda.",
+
+        step4Title:
+            "Macluumaadka bulshada",
+
+        step4Text:
+            "Macluumaadkani wuxuu dadka ka caawinayaa inay fahmaan xaaladda korontada.",
+
+        historyTitle:
+            "📈 Taariikhda Warbixinnada Korontada",
+
+        historyDescription:
+            "Warbixinnadii ugu dambeeyay ayaa hoos lagu muujiyay.",
+
+        trustTitle:
+            "🛡️ Kalsooni & Hufnaan",
+
+        trustText:
+            "Muhiim: Xaaladaha korontada ee website-kan lagu muujiyo waa warbixinno ay bulshada soo gudbisay. Ma aha ogeysiisyo rasmi ah oo shirkadda korontada ah.",
+
+        trustText2:
+            "Warbixinnada dhowaan la soo gudbiyay ayaa lagu go'aamiyaa xaaladda la muujinayo. Macluumaadku wuxuu noqon karaa mid aan dhamaystirnayn ama khaldan.",
+
+        footerText:
+            "Macluumaad koronto oo ay bulshadu wadaagto oo loogu talagalay Jigjiga."
+
+    }
+
+};
+
+
+function toggleLanguage() {
+
+    currentLanguage =
+        currentLanguage === "en"
+            ? "so"
+            : "en";
+
+    applyLanguage();
+
+}
+
+
+function applyLanguage() {
+
+    const language =
+        translations[currentLanguage];
+
+    document
+        .querySelectorAll("[data-i18n]")
+        .forEach(element => {
+
+            const key =
+                element.getAttribute(
+                    "data-i18n"
+                );
+
+            if (language[key]) {
+
+                element.textContent =
+                    language[key];
+
+            }
+
+        });
+
+
+    document.getElementById(
+        "languageButton"
+    ).textContent =
+        currentLanguage === "en"
+            ? "Soomaali"
+            : "English";
+
+}
+
+
+/* =====================================================
    TIME AGO
----------------------------- */
+===================================================== */
 
 function timeAgo(date) {
 
     const seconds =
         Math.floor(
-            (Date.now() - new Date(date)) / 1000
+            (
+                Date.now() -
+                new Date(date).getTime()
+            ) / 1000
         );
+
 
     if (seconds < 60) {
         return "just now";
     }
 
+
     const minutes =
         Math.floor(seconds / 60);
 
+
     if (minutes < 60) {
+
         return minutes +
-            (minutes === 1
-                ? " minute ago"
-                : " minutes ago");
+            (
+                minutes === 1
+                    ? " minute ago"
+                    : " minutes ago"
+            );
+
     }
+
 
     const hours =
         Math.floor(minutes / 60);
 
+
     if (hours < 24) {
+
         return hours +
-            (hours === 1
-                ? " hour ago"
-                : " hours ago");
+            (
+                hours === 1
+                    ? " hour ago"
+                    : " hours ago"
+            );
+
     }
+
 
     const days =
         Math.floor(hours / 24);
 
+
     return days +
-        (days === 1
-            ? " day ago"
-            : " days ago");
+        (
+            days === 1
+                ? " day ago"
+                : " days ago"
+        );
+
 }
 
 
-/* ---------------------------
-   LATEST REPORT
----------------------------- */
+/* =====================================================
+   RECENT REPORTS
+===================================================== */
 
-function getLatestReport(kebele) {
+function getRecentReports() {
 
-    const results =
-        reports.filter(
-            report => report.kebele === kebele
+    const sixHoursAgo =
+        Date.now() -
+        (6 * 60 * 60 * 1000);
+
+
+    return reports.filter(
+        report =>
+            new Date(
+                report.created_at
+            ).getTime() >= sixHoursAgo
+    );
+
+}
+
+
+function getLatestRecentReport(kebele) {
+
+    const recentReports =
+        getRecentReports().filter(
+            report =>
+                report.kebele === kebele
         );
 
-    if (results.length === 0) {
+
+    if (
+        recentReports.length === 0
+    ) {
         return null;
     }
 
-    return results[results.length - 1];
+
+    return recentReports[
+        recentReports.length - 1
+    ];
+
 }
 
 
-/* ---------------------------
+/* =====================================================
+   STATUS HELPERS
+===================================================== */
+
+function getStatusText(status) {
+
+    if (status === "on") {
+        return "🟢 ON";
+    }
+
+    if (status === "off") {
+        return "🔴 OFF";
+    }
+
+    if (status === "unstable") {
+        return "🟡 UNSTABLE";
+    }
+
+    return "⚪ UNKNOWN";
+
+}
+
+
+function getMapColor(status) {
+
+    if (status === "on") {
+        return "#16803c";
+    }
+
+    if (status === "off") {
+        return "#c62828";
+    }
+
+    if (status === "unstable") {
+        return "#b77900";
+    }
+
+    return "#667085";
+
+}
+
+
+/*
+   The official GIS boundary names may not exactly
+   match our temporary "Kebele 01" names.
+
+   This function tries to match the Kebele number.
+*/
+
+function kebeleNumbersMatch(
+    gisName,
+    reportName
+) {
+
+    if (!gisName || !reportName) {
+        return false;
+    }
+
+
+    const gisNumbers =
+        gisName.match(/\d+/g);
+
+
+    const reportNumbers =
+        reportName.match(/\d+/g);
+
+
+    if (
+        !gisNumbers ||
+        !reportNumbers
+    ) {
+        return false;
+    }
+
+
+    return (
+        Number(gisNumbers[0]) ===
+        Number(reportNumbers[0])
+    );
+
+}
+
+
+function getStatusForGISName(
+    gisName
+) {
+
+    const recentReports =
+        getRecentReports();
+
+
+    const matches =
+        recentReports.filter(
+            report =>
+                kebeleNumbersMatch(
+                    gisName,
+                    report.kebele
+                )
+        );
+
+
+    if (matches.length === 0) {
+
+        return {
+            status: "unknown",
+            count: 0
+        };
+
+    }
+
+
+    const latest =
+        matches[
+            matches.length - 1
+        ];
+
+
+    return {
+        status: latest.status,
+        count: matches.length
+    };
+
+}
+
+
+/* =====================================================
    DISPLAY KEBELES
----------------------------- */
+===================================================== */
 
 function displayKebeles() {
-    const kebeleSearch =
-    document.getElementById("kebeleSearch");
-
-kebeleSearch.addEventListener("input", function () {
-    const searchText =
-        kebeleSearch.value.toLowerCase();
-
-    const cards =
-        document.querySelectorAll("#kebeles > div");
-
-    cards.forEach(function (card) {
-        const text =
-            card.textContent.toLowerCase();
-
-        card.style.display =
-            text.includes(searchText)
-                ? ""
-                : "none";
-    });
-});
 
     const container =
-        document.getElementById("kebeles");
+        document.getElementById(
+            "kebeles"
+        );
+
 
     const select =
-        document.getElementById("kebeleSelect");
+        document.getElementById(
+            "kebeleSelect"
+        );
+
 
     container.innerHTML = "";
+
     select.innerHTML = "";
+
 
     let on = 0;
     let off = 0;
@@ -418,224 +1706,370 @@ kebeleSearch.addEventListener("input", function () {
     let unknown = 0;
 
 
-    kebeles.forEach(kebele => {
-
-        const report =
-            getLatestReport(kebele);
-
-        let status =
-            report
-                ? report.status
-                : "unknown";
+    const recentReports =
+        getRecentReports();
 
 
-        /*
-          Only reports from the
-          last 6 hours count as current.
-        */
-
-        const sixHoursAgo =
-            Date.now() -
-            (6 * 60 * 60 * 1000);
+    kebeles.forEach(
+        kebele => {
 
 
-        const recentReports =
-            reports.filter(report =>
+            const kebeleReports =
+                recentReports.filter(
+                    report =>
+                        report.kebele === kebele
+                );
 
-                report.kebele === kebele &&
 
-                new Date(report.created_at).getTime()
-                    >= sixHoursAgo
+            const latest =
+                kebeleReports.length > 0
+                    ? kebeleReports[
+                        kebeleReports.length - 1
+                    ]
+                    : null;
 
+
+            const status =
+                latest
+                    ? latest.status
+                    : "unknown";
+
+
+            if (status === "on") {
+                on++;
+            }
+
+            else if (status === "off") {
+                off++;
+            }
+
+            else if (
+                status === "unstable"
+            ) {
+                unstable++;
+            }
+
+            else {
+                unknown++;
+            }
+
+
+            const box =
+                document.createElement(
+                    "div"
+                );
+
+
+            box.className =
+                "kebele";
+
+
+            let html = "";
+
+
+            html +=
+                '<div class="kebele-name">' +
+                kebele +
+                "</div>";
+
+
+            html +=
+                '<span class="status ' +
+                status +
+                '">' +
+                getStatusText(status) +
+                "</span>";
+
+
+            if (latest) {
+
+                html +=
+                    '<div style="margin-top:8px;font-size:12px;color:#667085;">' +
+                    "Reported " +
+                    timeAgo(
+                        latest.created_at
+                    ) +
+                    "</div>";
+
+            }
+
+
+            if (
+                kebeleReports.length > 0
+            ) {
+
+                const offCount =
+                    kebeleReports.filter(
+                        r =>
+                            r.status === "off"
+                    ).length;
+
+
+                const onCount =
+                    kebeleReports.filter(
+                        r =>
+                            r.status === "on"
+                    ).length;
+
+
+                const unstableCount =
+                    kebeleReports.filter(
+                        r =>
+                            r.status === "unstable"
+                    ).length;
+
+
+                html +=
+                    '<div class="recent-reports">' +
+                    kebeleReports.length +
+                    " recent " +
+                    (
+                        kebeleReports.length === 1
+                            ? "report"
+                            : "reports"
+                    ) +
+                    "<br>" +
+                    "🔴 " +
+                    offCount +
+                    " OFF<br>" +
+                    "🟢 " +
+                    onCount +
+                    " ON<br>" +
+                    "🟡 " +
+                    unstableCount +
+                    " UNSTABLE" +
+                    "</div>";
+
+            }
+
+
+            box.innerHTML =
+                html;
+
+
+            container.appendChild(
+                box
             );
 
 
-        /*
-          Determine current status
-          using the latest recent report.
-        */
-
-        const latestRecentReport =
-            recentReports.length > 0
-                ? recentReports[recentReports.length - 1]
-                : null;
+            const option =
+                document.createElement(
+                    "option"
+                );
 
 
-        if (latestRecentReport) {
-            status =
-                latestRecentReport.status;
-        } else {
-            status = "unknown";
-        }
+            option.value =
+                kebele;
 
 
-        if (status === "on") {
-            on++;
-        }
-
-        if (status === "off") {
-            off++;
-        }
-
-        if (status === "unstable") {
-            unstable++;
-        }
-
-        if (status === "unknown") {
-            unknown++;
-        }
+            option.textContent =
+                kebele;
 
 
-        let text = "⚪ UNKNOWN";
-
-        if (status === "on") {
-            text = "🟢 ON";
-        }
-
-        if (status === "off") {
-            text = "🔴 OFF";
-        }
-
-        if (status === "unstable") {
-            text = "🟡 UNSTABLE";
-        }
-
-
-        /*
-          Count recent reports
-          by status.
-        */
-
-        const offReports =
-            recentReports.filter(
-                report => report.status === "off"
-            ).length;
-
-        const onReports =
-            recentReports.filter(
-                report => report.status === "on"
-            ).length;
-
-        const unstableReports =
-            recentReports.filter(
-                report => report.status === "unstable"
-            ).length;
-
-
-        let reportBreakdown = "";
-
-
-        if (offReports > 0) {
-            reportBreakdown +=
-                "🔴 " +
-                offReports +
-                " OFF<br>";
-        }
-
-        if (onReports > 0) {
-            reportBreakdown +=
-                "🟢 " +
-                onReports +
-                " ON<br>";
-        }
-
-        if (unstableReports > 0) {
-            reportBreakdown +=
-                "🟡 " +
-                unstableReports +
-                " UNSTABLE";
-        }
-
-
-        const reportCount =
-            recentReports.length;
-
-
-        const box =
-            document.createElement("div");
-
-        box.className = "kebele";
-
-
-        let cardHTML = "";
-
-        cardHTML +=
-            '<div class="kebele-name">' +
-            kebele +
-            "</div>";
-
-
-        cardHTML +=
-            '<span class="status ' +
-            status +
-            '">' +
-            text +
-            "</span>";
-
-
-        if (latestRecentReport) {
-
-            cardHTML +=
-                '<div style="margin-top:8px;font-size:12px;color:#667085;">' +
-                "Reported " +
-                timeAgo(
-                    latestRecentReport.created_at
-                ) +
-                "</div>";
+            select.appendChild(
+                option
+            );
 
         }
+    );
 
 
-        if (reportCount > 0) {
-
-            cardHTML +=
-                '<div class="recent-reports">' +
-                reportCount +
-                " recent " +
-                (reportCount === 1
-                    ? "report"
-                    : "reports") +
-                "<br>" +
-                reportBreakdown +
-                "</div>";
-
-        }
+    document.getElementById(
+        "onCount"
+    ).textContent = on;
 
 
-        box.innerHTML = cardHTML;
-
-        container.appendChild(box);
-
-
-        const option =
-            document.createElement("option");
-
-        option.value = kebele;
-
-        option.textContent = kebele;
-
-        select.appendChild(option);
-
-    });
+    document.getElementById(
+        "offCount"
+    ).textContent = off;
 
 
-    document.getElementById("onCount")
-        .textContent = on;
+    document.getElementById(
+        "unstableCount"
+    ).textContent = unstable;
 
-    document.getElementById("offCount")
-        .textContent = off;
 
-    document.getElementById("unstableCount")
-        .textContent = unstable;
+    document.getElementById(
+        "unknownCount"
+    ).textContent = unknown;
 
-    document.getElementById("unknownCount")
-        .textContent = unknown;
+
+    updateStatistics();
+
 }
 
 
-/* ---------------------------
+/* =====================================================
+   SEARCH
+===================================================== */
+
+document.getElementById(
+    "kebeleSearch"
+).addEventListener(
+    "input",
+    function() {
+
+        const searchText =
+            this.value
+                .toLowerCase()
+                .trim();
+
+
+        const cards =
+            document.querySelectorAll(
+                "#kebeles .kebele"
+            );
+
+
+        cards.forEach(
+            card => {
+
+                const text =
+                    card.textContent
+                        .toLowerCase();
+
+
+                card.style.display =
+                    text.includes(
+                        searchText
+                    )
+                        ? ""
+                        : "none";
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
+   STATISTICS
+===================================================== */
+
+function updateStatistics() {
+
+    const recent =
+        getRecentReports();
+
+
+    const active =
+        new Set(
+            recent.map(
+                report =>
+                    report.kebele
+            )
+        ).size;
+
+
+    document.getElementById(
+        "totalReports"
+    ).textContent =
+        reports.length;
+
+
+    document.getElementById(
+        "recentReportsTotal"
+    ).textContent =
+        recent.length;
+
+
+    document.getElementById(
+        "activeKebeles"
+    ).textContent =
+        active;
+
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+function displayHistory() {
+
+    const container =
+        document.getElementById(
+            "historyList"
+        );
+
+
+    container.innerHTML = "";
+
+
+    const latestReports =
+        [...reports]
+            .reverse()
+            .slice(0, 20);
+
+
+    if (
+        latestReports.length === 0
+    ) {
+
+        container.innerHTML =
+            '<div class="empty">' +
+            "No reports yet." +
+            "</div>";
+
+        return;
+
+    }
+
+
+    latestReports.forEach(
+        report => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "history-item";
+
+
+            const statusText =
+                getStatusText(
+                    report.status
+                );
+
+
+            item.innerHTML =
+
+                '<div class="history-left">' +
+
+                    '<div class="history-kebele">' +
+                    report.kebele +
+                    "</div>" +
+
+                    '<div class="history-time">' +
+                    timeAgo(
+                        report.created_at
+                    ) +
+                    "</div>" +
+
+                "</div>" +
+
+                '<div class="history-status">' +
+                statusText +
+                "</div>";
+
+
+            container.appendChild(
+                item
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
    LOAD REPORTS
----------------------------- */
+===================================================== */
 
 async function loadReports() {
 
@@ -660,37 +2094,49 @@ async function loadReports() {
 
         console.error(error);
 
+
         document.getElementById(
             "message"
         ).textContent =
             "⚠️ Could not load reports.";
+
 
         document.getElementById(
             "message"
         ).className =
             "message error";
 
+
         return;
+
     }
 
 
-    reports = data || [];
-    const lastUpdated =
-    document.getElementById("lastUpdated");
+    reports =
+        data || [];
 
-if (lastUpdated) {
-    lastUpdated.textContent =
+
+    document.getElementById(
+        "lastUpdated"
+    ).textContent =
         "Last updated: " +
         new Date().toLocaleString();
-}
+
 
     displayKebeles();
+
+    displayHistory();
+
+    updateStatistics();
+
+    updateMap();
+
 }
 
 
-/* ---------------------------
+/* =====================================================
    SUBMIT REPORT
----------------------------- */
+===================================================== */
 
 async function submitReport() {
 
@@ -699,18 +2145,17 @@ async function submitReport() {
             "kebeleSelect"
         ).value;
 
+
     const status =
         document.getElementById(
             "statusSelect"
         ).value;
 
 
-    /*
-      6-HOUR DEVICE PROTECTION
-    */
-
     const lastReportKey =
-        "lastReport_" + kebele;
+        "lastReport_" +
+        kebele;
+
 
     const lastReportTime =
         localStorage.getItem(
@@ -728,31 +2173,39 @@ async function submitReport() {
             (1000 * 60 * 60);
 
 
-        if (hoursPassed < 6) {
-
-            const remainingHours =
-                6 - hoursPassed;
+        if (
+            hoursPassed < 6
+        ) {
 
             const remainingMinutes =
                 Math.ceil(
-                    remainingHours * 60
+                    (
+                        6 -
+                        hoursPassed
+                    ) * 60
                 );
 
 
-            document.getElementById(
-                "message"
-            ).textContent =
+            const message =
+                document.getElementById(
+                    "message"
+                );
+
+
+            message.textContent =
                 "⏳ You already reported this Kebele. Please try again in about " +
                 remainingMinutes +
                 " minutes.";
 
-            document.getElementById(
-                "message"
-            ).className =
+
+            message.className =
                 "message error";
 
+
             return;
+
         }
+
     }
 
 
@@ -761,21 +2214,20 @@ async function submitReport() {
             "submitButton"
         );
 
+
     const message =
         document.getElementById(
             "message"
         );
 
 
-    button.disabled = true;
+    button.disabled =
+        true;
+
 
     button.textContent =
         "Submitting...";
 
-
-    /*
-      Save report
-    */
 
     const {
         error
@@ -784,8 +2236,11 @@ async function submitReport() {
         .from("reports")
 
         .insert({
-            kebele: kebele,
-            status: status
+            kebele:
+                kebele,
+
+            status:
+                status
         });
 
 
@@ -793,20 +2248,22 @@ async function submitReport() {
 
         console.error(error);
 
+
         message.textContent =
             "❌ Report could not be submitted.";
+
 
         message.className =
             "message error";
 
-    } else {
+    }
 
-        /*
-          Save local 6-hour timer
-        */
+    else {
 
         localStorage.setItem(
-            "lastReport_" + kebele,
+            "lastReport_" +
+            kebele,
+
             Date.now().toString()
         );
 
@@ -814,24 +2271,350 @@ async function submitReport() {
         message.textContent =
             "✅ Your report has been recorded.";
 
+
         message.className =
-            "message";
+            "message success";
 
 
         await loadReports();
+
     }
 
 
-    button.disabled = false;
+    button.disabled =
+        false;
+
 
     button.textContent =
-        "Submit Report";
+        currentLanguage === "en"
+            ? "Submit Report"
+            : "Soo Gudbi Warbixin";
+
 }
 
 
-/* ---------------------------
+/* =====================================================
+   MAP
+===================================================== */
+
+const map =
+    L.map("map").setView(
+        [9.3500, 42.8000],
+        13
+    );
+
+
+L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+        attribution:
+            "&copy; OpenStreetMap contributors"
+    }
+).addTo(map);
+
+
+let boundaryLayer = null;
+
+
+/* =====================================================
+   MAP LEGEND
+===================================================== */
+
+const legend =
+    L.control({
+        position:
+            "bottomright"
+    });
+
+
+legend.onAdd =
+    function() {
+
+        const div =
+            L.DomUtil.create(
+                "div",
+                "map-legend"
+            );
+
+
+        div.innerHTML =
+
+            "<strong>Electricity Status</strong><br>" +
+
+            "<span style='color:#16803c;'>●</span> ON<br>" +
+
+            "<span style='color:#c62828;'>●</span> OFF<br>" +
+
+            "<span style='color:#b77900;'>●</span> UNSTABLE<br>" +
+
+            "<span style='color:#667085;'>●</span> UNKNOWN";
+
+
+        return div;
+
+    };
+
+
+legend.addTo(map);
+
+
+/* =====================================================
+   MAP BOUNDARIES
+===================================================== */
+
+const query =
+    "R_NAME='Somali' AND W_NAME='Fafan'";
+
+
+const boundaryURL =
+    "https://services8.arcgis.com/oTalEaSXAuyNT7xf/arcgis/rest/services/Ethiopia_AdminBoundaries/FeatureServer/0/query" +
+
+    "?where=" +
+
+    encodeURIComponent(
+        query
+    ) +
+
+    "&outFields=R_NAME,W_NAME,UK_NAME,KK_NAME" +
+
+    "&returnGeometry=true" +
+
+    "&outSR=4326" +
+
+    "&f=geojson";
+
+
+fetch(boundaryURL)
+
+.then(
+    response =>
+        response.json()
+)
+
+.then(
+    data => {
+
+        boundaryLayer =
+            L.geoJSON(
+                data,
+                {
+
+                    style:
+                        function(feature) {
+
+                            const name =
+                                feature
+                                    .properties
+                                    .KK_NAME ||
+
+                                feature
+                                    .properties
+                                    .UK_NAME ||
+
+                                "Unknown Kebele";
+
+
+                            const result =
+                                getStatusForGISName(
+                                    name
+                                );
+
+
+                            return {
+
+                                color:
+                                    getMapColor(
+                                        result.status
+                                    ),
+
+                                weight:
+                                    2,
+
+                                fillColor:
+                                    getMapColor(
+                                        result.status
+                                    ),
+
+                                fillOpacity:
+                                    0.35
+
+                            };
+
+                        },
+
+
+                    onEachFeature:
+                        function(
+                            feature,
+                            layer
+                        ) {
+
+                            const name =
+                                feature
+                                    .properties
+                                    .KK_NAME ||
+
+                                feature
+                                    .properties
+                                    .UK_NAME ||
+
+                                "Kebele";
+
+
+                            layer.on(
+                                "click",
+                                function() {
+
+                                    const result =
+                                        getStatusForGISName(
+                                            name
+                                        );
+
+
+                                    layer.bindPopup(
+
+                                        "<strong>" +
+                                        name +
+                                        "</strong><br><br>" +
+
+                                        getStatusText(
+                                            result.status
+                                        ) +
+
+                                        "<br>" +
+
+                                        result.count +
+
+                                        " recent " +
+
+                                        (
+                                            result.count === 1
+                                                ? "report"
+                                                : "reports"
+                                        )
+
+                                    ).openPopup();
+
+                                }
+                            );
+
+                        }
+
+                }
+            );
+
+
+        boundaryLayer.addTo(
+            map
+        );
+
+
+        try {
+
+            map.fitBounds(
+                boundaryLayer.getBounds(),
+                {
+                    padding: [15, 15]
+                }
+            );
+
+        }
+
+        catch(error) {
+
+            console.error(
+                error
+            );
+
+        }
+
+    }
+)
+
+.catch(
+    error => {
+
+        console.error(
+            "Could not load Jijiga boundaries:",
+            error
+        );
+
+    }
+);
+
+
+/* =====================================================
+   UPDATE MAP
+===================================================== */
+
+function updateMap() {
+
+    if (!boundaryLayer) {
+        return;
+    }
+
+
+    boundaryLayer.eachLayer(
+        layer => {
+
+            const feature =
+                layer.feature;
+
+
+            if (!feature) {
+                return;
+            }
+
+
+            const name =
+                feature
+                    .properties
+                    .KK_NAME ||
+
+                feature
+                    .properties
+                    .UK_NAME ||
+
+                "Kebele";
+
+
+            const result =
+                getStatusForGISName(
+                    name
+                );
+
+
+            const color =
+                getMapColor(
+                    result.status
+                );
+
+
+            layer.setStyle({
+
+                color:
+                    color,
+
+                fillColor:
+                    color,
+
+                weight:
+                    2,
+
+                fillOpacity:
+                    0.35
+
+            });
+
+        }
+    );
+
+}
+
+
+/* =====================================================
    REALTIME UPDATES
----------------------------- */
+===================================================== */
 
 supabaseClient
 
@@ -848,285 +2631,25 @@ supabaseClient
         },
 
         function() {
+
             loadReports();
+
         }
+
     )
 
     .subscribe();
 
 
-/* ---------------------------
+/* =====================================================
    START
----------------------------- */
-const map = L.map("map").setView(
-    [9.3500, 42.8000],
-    13
-);
+===================================================== */
 
-L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-        attribution: "&copy; OpenStreetMap contributors"
-    }
-).addTo(map);
+applyLanguage();
 
-
-/*
-   Load Kebele boundaries around Jijiga/Fafan
-   and connect them to recent electricity reports.
-*/
-
-const sixHoursAgo =
-    Date.now() - (6 * 60 * 60 * 1000);
-
-
-function getKebeleStatus(kebeleName) {
-
-    const recentReports =
-        reports.filter(report => {
-
-            return (
-                report.kebele === kebeleName &&
-                new Date(report.created_at).getTime()
-                    >= sixHoursAgo
-            );
-
-        });
-
-
-    if (recentReports.length === 0) {
-        return {
-            status: "unknown",
-            count: 0
-        };
-    }
-
-
-    const latest =
-        recentReports[
-            recentReports.length - 1
-        ];
-
-
-    return {
-        status: latest.status,
-        count: recentReports.length
-    };
-}
-
-
-function getMapColor(status) {
-
-    if (status === "on") {
-        return "#16803c";
-    }
-
-    if (status === "off") {
-        return "#c62828";
-    }
-
-    if (status === "unstable") {
-        return "#b77900";
-    }
-
-    return "#667085";
-}
-
-
-function getMapText(status) {
-
-    if (status === "on") {
-        return "🟢 ON";
-    }
-
-    if (status === "off") {
-        return "🔴 OFF";
-    }
-
-    if (status === "unstable") {
-        return "🟡 UNSTABLE";
-    }
-
-    return "⚪ UNKNOWN";
-}
-
-
-/*
-   Jijiga/Fafan Kebele polygons.
-*/
-
-const query =
-    "R_NAME='Somali' AND W_NAME='Fafan'";
-
-
-const url =
-    "https://services8.arcgis.com/oTalEaSXAuyNT7xf/arcgis/rest/services/Ethiopia_AdminBoundaries/FeatureServer/0/query" +
-    "?where=" +
-    encodeURIComponent(query) +
-    "&outFields=R_NAME,W_NAME,UK_NAME,KK_NAME" +
-    "&returnGeometry=true" +
-    "&outSR=4326" +
-    "&f=geojson";
-
-
-fetch(url)
-
-.then(response => response.json())
-
-.then(data => {
-
-    L.geoJSON(data, {
-
-        style: function(feature) {
-
-            const name =
-                feature.properties.KK_NAME ||
-                feature.properties.UK_NAME ||
-                "Unknown Kebele";
-
-
-            const result =
-                getKebeleStatus(name);
-
-
-            return {
-
-                color:
-                    getMapColor(
-                        result.status
-                    ),
-
-                weight: 2,
-
-                fillColor:
-                    getMapColor(
-                        result.status
-                    ),
-
-                fillOpacity: 0.35
-
-            };
-
-        },
-
-
-        onEachFeature:
-            function(feature, layer) {
-
-                const name =
-                    feature.properties.KK_NAME ||
-                    feature.properties.UK_NAME ||
-                    "Unknown Kebele";
-
-
-                const result =
-                    getKebeleStatus(name);
-
-
-                layer.bindPopup(
-
-                    "<strong>" +
-                    name +
-                    "</strong><br><br>" +
-
-                    getMapText(
-                        result.status
-                    ) +
-
-                    "<br>" +
-
-                    result.count +
-
-                    " recent " +
-
-                    (
-                        result.count === 1
-                            ? "report"
-                            : "reports"
-                    )
-
-                );
-
-            }
-
-    }).addTo(map);
-
-})
-
-
-.catch(error => {
-
-    console.error(
-        "Could not load Jijiga boundaries:",
-        error
-    );
-
-});
-L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-    {
-        attribution: '&copy; OpenStreetMap contributors'
-    }
-).addTo(map);
-
-
-/* Real Ethiopia Kebele boundaries */
-fetch(
-    "https://services8.arcgis.com/oTalEaSXAuyNT7xf/arcgis/rest/services/Ethiopia_AdminBoundaries/FeatureServer/0/query?where=R_NAME%3D%27Somali%27&outFields=*&returnGeometry=true&outSR=4326&f=geojson"
-)
-.then(response => response.json())
-.then(data => {
-
-    L.geoJSON(data, {
-
-        style: {
-            color: "#0b5d4b",
-            weight: 1,
-            fillOpacity: 0.08
-        },
-
-        onEachFeature: function(feature, layer) {
-
-            const name =
-                feature.properties.KK_NAME ||
-                feature.properties.UK_NAME ||
-                "Kebele";
-
-            layer.bindPopup(
-                "<strong>" +
-                name +
-                "</strong><br>" +
-                "Jijiga Electricity"
-            );
-
-        }
-
-    }).addTo(map);
-
-})
-.catch(error => {
-    console.error(
-        "Could not load Kebele boundaries:",
-        error
-    );
-});
-    const legend = L.control({ position: "bottomright" });
-
-legend.onAdd = function () {
-    const div = L.DomUtil.create("div", "map-legend");
-
-    div.innerHTML =
-        "<strong>Electricity Status</strong><br>" +
-        "<span style='color:#16803c;'>●</span> ON<br>" +
-        "<span style='color:#c62828;'>●</span> OFF<br>" +
-        "<span style='color:#b77900;'>●</span> UNSTABLE<br>" +
-        "<span style='color:#667085;'>●</span> UNKNOWN";
-
-    return div;
-};
-
-legend.addTo(map);
 displayKebeles();
+
+displayHistory();
 
 loadReports();
 
