@@ -1,178 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Jijiga Electricity</title>
+<title>Jijiga Electricity</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
+* {
+    box-sizing: border-box;
+}
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f7f9;
-            color: #17202a;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7f9;
+    color: #17202a;
+}
 
-        header {
-            background: #0b5d4b;
-            color: white;
-            padding: 25px 20px;
-            text-align: center;
-        }
+header {
+    background: #0b5d4b;
+    color: white;
+    padding: 25px 20px;
+    text-align: center;
+}
 
-        header h1 {
-            margin: 0 0 8px;
-            font-size: 30px;
-        }
+header h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+}
 
-        header p {
-            margin: 0;
-        }
+header p {
+    margin: 0;
+}
 
-        main {
-            max-width: 1000px;
-            margin: auto;
-            padding: 20px;
-        }
+main {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
 
-        .summary {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
+.summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
 
-        .card {
-            background: white;
-            padding: 18px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
+.card {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
 
-        .card strong {
-            display: block;
-            font-size: 28px;
-            margin-top: 8px;
-        }
+.card strong {
+    display: block;
+    font-size: 28px;
+    margin-top: 8px;
+}
 
-        .green { color: #16803c; }
-        .red { color: #c62828; }
-        .yellow { color: #b77900; }
-        .gray { color: #667085; }
+.green {
+    color: #16803c;
+}
 
-        .panel {
-            background: white;
-            padding: 20px;
-            border-radius: 14px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            margin-bottom: 20px;
-        }
+.red {
+    color: #c62828;
+}
 
-        .panel h2 {
-            margin-top: 0;
-        }
+.yellow {
+    color: #b77900;
+}
 
-        .kebeles {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
+.gray {
+    color: #667085;
+}
 
-        .kebele {
-            border: 1px solid #e1e6ea;
-            border-radius: 10px;
-            padding: 14px;
-            background: white;
-        }
+.panel {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
 
-        .kebele-name {
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
+.panel h2 {
+    margin-top: 0;
+}
 
-        .status {
-            display: inline-block;
-            padding: 6px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
+.kebeles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
 
-        .on {
-            background: #dff6e7;
-            color: #126b34;
-        }
+.kebele {
+    border: 1px solid #e1e6ea;
+    border-radius: 10px;
+    padding: 14px;
+    background: white;
+}
 
-        .off {
-            background: #fde3e3;
-            color: #a51f1f;
-        }
+.kebele-name {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
 
-        .unstable {
-            background: #fff0c7;
-            color: #875f00;
-        }
+.status {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
 
-        .unknown {
-            background: #edf0f2;
-            color: #667085;
-        }
+.on {
+    background: #dff6e7;
+    color: #126b34;
+}
 
-        select,
-        button {
-            width: 100%;
-            padding: 13px;
-            margin-top: 8px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            border: 1px solid #ccd3d8;
-            font-size: 16px;
-        }
+.off {
+    background: #fde3e3;
+    color: #a51f1f;
+}
 
-        button {
-            background: #0b5d4b;
-            color: white;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-        }
+.unstable {
+    background: #fff0c7;
+    color: #875f00;
+}
 
-        button:disabled {
-            background: #999;
-        }
+.unknown {
+    background: #edf0f2;
+    color: #667085;
+}
 
-        .message {
-            color: #0b5d4b;
-            font-weight: bold;
-        }
+.recent-reports {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #667085;
+    line-height: 1.7;
+}
 
-        .error {
-            color: #c62828;
-        }
+select,
+button {
+    width: 100%;
+    padding: 13px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccd3d8;
+    font-size: 16px;
+}
 
-        footer {
-            text-align: center;
-            padding: 25px;
-            color: #667085;
-            font-size: 13px;
-        }
+button {
+    background: #0b5d4b;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-        @media (max-width: 700px) {
-            .summary {
-                grid-template-columns: repeat(2, 1fr);
-            }
+button:disabled {
+    background: #999;
+}
 
-            .kebeles {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+.message {
+    color: #0b5d4b;
+    font-weight: bold;
+}
+
+.error {
+    color: #c62828;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    color: #667085;
+    font-size: 13px;
+}
+
+@media (max-width: 700px) {
+    .summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .kebeles {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
 </head>
 
 <body>
@@ -184,75 +202,63 @@
 
 <main>
 
-    <div class="summary">
-
-        <div class="card green">
-            🟢 ON
-            <strong id="onCount">0</strong>
-        </div>
-
-        <div class="card red">
-            🔴 OFF
-            <strong id="offCount">0</strong>
-        </div>
-
-        <div class="card yellow">
-            🟡 UNSTABLE
-            <strong id="unstableCount">0</strong>
-        </div>
-
-        <div class="card gray">
-            ⚪ UNKNOWN
-            <strong id="unknownCount">20</strong>
-        </div>
-
+<div class="summary">
+    <div class="card green">
+        🟢 ON
+        <strong id="onCount">0</strong>
     </div>
 
-    <div class="panel">
-
-        <h2>🗺️ Jijiga Urban Kebeles</h2>
-
-        <p>
-            Check the latest reported electricity status in each Kebele.
-        </p>
-
-        <div class="kebeles" id="kebeles"></div>
-
+    <div class="card red">
+        🔴 OFF
+        <strong id="offCount">0</strong>
     </div>
 
-    <div class="panel">
-
-        <h2>📍 Report Electricity Status</h2>
-
-        <label>Select your Kebele</label>
-
-        <select id="kebeleSelect"></select>
-
-        <label>What is the electricity situation?</label>
-
-        <select id="statusSelect">
-
-            <option value="on">
-                🟢 Electricity is ON
-            </option>
-
-            <option value="off">
-                🔴 Electricity is OFF
-            </option>
-
-            <option value="unstable">
-                🟡 Electricity is UNSTABLE
-            </option>
-
-        </select>
-
-        <button id="submitButton" onclick="submitReport()">
-            Submit Report
-        </button>
-
-        <p id="message" class="message"></p>
-
+    <div class="card yellow">
+        🟡 UNSTABLE
+        <strong id="unstableCount">0</strong>
     </div>
+
+    <div class="card gray">
+        ⚪ UNKNOWN
+        <strong id="unknownCount">20</strong>
+    </div>
+</div>
+
+<div class="panel">
+
+    <h2>🗺️ Jijiga Urban Kebeles</h2>
+
+    <p>
+        Check the latest reported electricity status in each Kebele.
+    </p>
+
+    <div class="kebeles" id="kebeles"></div>
+
+</div>
+
+<div class="panel">
+
+    <h2>📍 Report Electricity Status</h2>
+
+    <label>Select your Kebele</label>
+
+    <select id="kebeleSelect"></select>
+
+    <label>What is the electricity situation?</label>
+
+    <select id="statusSelect">
+        <option value="on">🟢 Electricity is ON</option>
+        <option value="off">🔴 Electricity is OFF</option>
+        <option value="unstable">🟡 Electricity is UNSTABLE</option>
+    </select>
+
+    <button id="submitButton" onclick="submitReport()">
+        Submit Report
+    </button>
+
+    <p id="message" class="message"></p>
+
+</div>
 
 </main>
 
@@ -260,345 +266,556 @@
     Jijiga Electricity © 2026
 </footer>
 
-<!-- Supabase library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-    // ==========================================
-    // SUPABASE CONNECTION
-    // ==========================================
+const SUPABASE_URL =
+    "https://wvenavpgdlbrlqpnqjlb.supabase.co";
 
-    const SUPABASE_URL =
-        "https://wvenavpgdlbrlqpnqjlb.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_4utSOBVLpg1hPvXb9GtkzA_c9_bUxcu";
 
-    const SUPABASE_PUBLISHABLE_KEY =
-       "sb_publishable_4utSOBVLpg1hPvXb9GtkzA_c9_bUxcu";
-
-    const supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_PUBLISHABLE_KEY
-        );
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
 
 
-    // ==========================================
-    // KEBELES
-    // ==========================================
+const kebeles = [];
 
-    const kebeles = [];
-
-    for (let i = 1; i <= 20; i++) {
-
-        kebeles.push(
-            "Kebele " + String(i).padStart(2, "0")
-        );
-
-    }
+for (let i = 1; i <= 20; i++) {
+    kebeles.push(
+        "Kebele " + String(i).padStart(2, "0")
+    );
+}
 
 
-    // ==========================================
-    // REPORTS
-    // ==========================================
+let reports = [];
 
-    let reports = [];
+
+/* ---------------------------
+   TIME AGO
+---------------------------- */
+
 function timeAgo(date) {
-    const seconds = Math.floor((Date.now() - new Date(date)) / 1000);
+
+    const seconds =
+        Math.floor(
+            (Date.now() - new Date(date)) / 1000
+        );
 
     if (seconds < 60) {
         return "just now";
     }
 
-    const minutes = Math.floor(seconds / 60);
+    const minutes =
+        Math.floor(seconds / 60);
 
     if (minutes < 60) {
-        return minutes + (minutes === 1 ? " minute ago" : " minutes ago");
+        return minutes +
+            (minutes === 1
+                ? " minute ago"
+                : " minutes ago");
     }
 
-    const hours = Math.floor(minutes / 60);
+    const hours =
+        Math.floor(minutes / 60);
 
     if (hours < 24) {
-        return hours + (hours === 1 ? " hour ago" : " hours ago");
+        return hours +
+            (hours === 1
+                ? " hour ago"
+                : " hours ago");
     }
 
-    const days = Math.floor(hours / 24);
+    const days =
+        Math.floor(hours / 24);
 
-    return days + (days === 1 ? " day ago" : " days ago");
+    return days +
+        (days === 1
+            ? " day ago"
+            : " days ago");
 }
 
-    function getLatestReport(kebele) {
 
-        const results =
-            reports.filter(
-                report => report.kebele === kebele
+/* ---------------------------
+   LATEST REPORT
+---------------------------- */
+
+function getLatestReport(kebele) {
+
+    const results =
+        reports.filter(
+            report => report.kebele === kebele
+        );
+
+    if (results.length === 0) {
+        return null;
+    }
+
+    return results[results.length - 1];
+}
+
+
+/* ---------------------------
+   DISPLAY KEBELES
+---------------------------- */
+
+function displayKebeles() {
+
+    const container =
+        document.getElementById("kebeles");
+
+    const select =
+        document.getElementById("kebeleSelect");
+
+    container.innerHTML = "";
+    select.innerHTML = "";
+
+    let on = 0;
+    let off = 0;
+    let unstable = 0;
+    let unknown = 0;
+
+
+    kebeles.forEach(kebele => {
+
+        const report =
+            getLatestReport(kebele);
+
+        let status =
+            report
+                ? report.status
+                : "unknown";
+
+
+        /*
+          Only reports from the
+          last 6 hours count as current.
+        */
+
+        const sixHoursAgo =
+            Date.now() -
+            (6 * 60 * 60 * 1000);
+
+
+        const recentReports =
+            reports.filter(report =>
+
+                report.kebele === kebele &&
+
+                new Date(report.created_at).getTime()
+                    >= sixHoursAgo
+
             );
 
-        if (results.length === 0) {
-            return null;
+
+        /*
+          Determine current status
+          using the latest recent report.
+        */
+
+        const latestRecentReport =
+            recentReports.length > 0
+                ? recentReports[recentReports.length - 1]
+                : null;
+
+
+        if (latestRecentReport) {
+            status =
+                latestRecentReport.status;
+        } else {
+            status = "unknown";
         }
 
-        return results[results.length - 1];
 
-    }
+        if (status === "on") {
+            on++;
+        }
 
+        if (status === "off") {
+            off++;
+        }
 
-    // ==========================================
-    // DISPLAY KEBELES
-    // ==========================================
+        if (status === "unstable") {
+            unstable++;
+        }
 
-    function displayKebeles() {
-
-        const container =
-            document.getElementById("kebeles");
-
-        const select =
-            document.getElementById("kebeleSelect");
-
-        container.innerHTML = "";
-
-        select.innerHTML = "";
+        if (status === "unknown") {
+            unknown++;
+        }
 
 
-        let on = 0;
-        let off = 0;
-        let unstable = 0;
-        let unknown = 0;
+        let text = "⚪ UNKNOWN";
+
+        if (status === "on") {
+            text = "🟢 ON";
+        }
+
+        if (status === "off") {
+            text = "🔴 OFF";
+        }
+
+        if (status === "unstable") {
+            text = "🟡 UNSTABLE";
+        }
 
 
-        kebeles.forEach(kebele => {
+        /*
+          Count recent reports
+          by status.
+        */
 
-            const report =
-                getLatestReport(kebele);
+        const offReports =
+            recentReports.filter(
+                report => report.status === "off"
+            ).length;
 
-            let status =
-                report ? report.status : "unknown";
+        const onReports =
+            recentReports.filter(
+                report => report.status === "on"
+            ).length;
 
-
-            if (status === "on") on++;
-            if (status === "off") off++;
-            if (status === "unstable") unstable++;
-            if (status === "unknown") unknown++;
-
-
-            let text = "";
-
-            if (status === "on")
-                text = "🟢 ON";
-
-            if (status === "off")
-                text = "🔴 OFF";
-
-            if (status === "unstable")
-                text = "🟡 UNSTABLE";
-
-            if (status === "unknown")
-                text = "⚪ UNKNOWN";
+        const unstableReports =
+            recentReports.filter(
+                report => report.status === "unstable"
+            ).length;
 
 
-            const box =
-                document.createElement("div");
-
-            box.className = "kebele";
+        let reportBreakdown = "";
 
 
-           box.innerHTML = `
-    <div class="kebele-name">
-        ${kebele}
-    </div>
+        if (offReports > 0) {
+            reportBreakdown +=
+                "🔴 " +
+                offReports +
+                " OFF<br>";
+        }
 
-    <span class="status ${status}">
-        ${text}
-    </span>
+        if (onReports > 0) {
+            reportBreakdown +=
+                "🟢 " +
+                onReports +
+                " ON<br>";
+        }
 
-    ${
-        report
-        ? `<div style="margin-top:8px;font-size:12px;color:#667085;">
-            Reported ${timeAgo(report.created_at)}
-           </div>`
-        : ""
-    }
-`;
-
-
-            container.appendChild(box);
-
-
-            const option =
-                document.createElement("option");
-
-            option.value = kebele;
-
-            option.textContent = kebele;
-
-            select.appendChild(option);
-
-        });
+        if (unstableReports > 0) {
+            reportBreakdown +=
+                "🟡 " +
+                unstableReports +
+                " UNSTABLE";
+        }
 
 
-        document.getElementById("onCount")
-            .textContent = on;
-
-        document.getElementById("offCount")
-            .textContent = off;
-
-        document.getElementById("unstableCount")
-            .textContent = unstable;
-
-        document.getElementById("unknownCount")
-            .textContent = unknown;
-
-    }
+        const reportCount =
+            recentReports.length;
 
 
-    // ==========================================
-    // LOAD REPORTS FROM SUPABASE
-    // ==========================================
+        const box =
+            document.createElement("div");
 
-    async function loadReports() {
+        box.className = "kebele";
 
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .from("reports")
-            .select("*")
-            .order("created_at", {
+
+        let cardHTML = "";
+
+        cardHTML +=
+            '<div class="kebele-name">' +
+            kebele +
+            "</div>";
+
+
+        cardHTML +=
+            '<span class="status ' +
+            status +
+            '">' +
+            text +
+            "</span>";
+
+
+        if (latestRecentReport) {
+
+            cardHTML +=
+                '<div style="margin-top:8px;font-size:12px;color:#667085;">' +
+                "Reported " +
+                timeAgo(
+                    latestRecentReport.created_at
+                ) +
+                "</div>";
+
+        }
+
+
+        if (reportCount > 0) {
+
+            cardHTML +=
+                '<div class="recent-reports">' +
+                reportCount +
+                " recent " +
+                (reportCount === 1
+                    ? "report"
+                    : "reports") +
+                "<br>" +
+                reportBreakdown +
+                "</div>";
+
+        }
+
+
+        box.innerHTML = cardHTML;
+
+        container.appendChild(box);
+
+
+        const option =
+            document.createElement("option");
+
+        option.value = kebele;
+
+        option.textContent = kebele;
+
+        select.appendChild(option);
+
+    });
+
+
+    document.getElementById("onCount")
+        .textContent = on;
+
+    document.getElementById("offCount")
+        .textContent = off;
+
+    document.getElementById("unstableCount")
+        .textContent = unstable;
+
+    document.getElementById("unknownCount")
+        .textContent = unknown;
+}
+
+
+/* ---------------------------
+   LOAD REPORTS
+---------------------------- */
+
+async function loadReports() {
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("reports")
+
+        .select("*")
+
+        .order(
+            "created_at",
+            {
                 ascending: true
-            });
+            }
+        );
 
 
-        if (error) {
+    if (error) {
 
-            console.error(error);
+        console.error(error);
 
-            document.getElementById("message")
-                .textContent =
-                "⚠️ Could not load reports.";
+        document.getElementById(
+            "message"
+        ).textContent =
+            "⚠️ Could not load reports.";
 
-            document.getElementById("message")
-                .className =
+        document.getElementById(
+            "message"
+        ).className =
+            "message error";
+
+        return;
+    }
+
+
+    reports = data || [];
+
+    displayKebeles();
+}
+
+
+/* ---------------------------
+   SUBMIT REPORT
+---------------------------- */
+
+async function submitReport() {
+
+    const kebele =
+        document.getElementById(
+            "kebeleSelect"
+        ).value;
+
+    const status =
+        document.getElementById(
+            "statusSelect"
+        ).value;
+
+
+    /*
+      6-HOUR DEVICE PROTECTION
+    */
+
+    const lastReportKey =
+        "lastReport_" + kebele;
+
+    const lastReportTime =
+        localStorage.getItem(
+            lastReportKey
+        );
+
+
+    if (lastReportTime) {
+
+        const hoursPassed =
+            (
+                Date.now() -
+                Number(lastReportTime)
+            ) /
+            (1000 * 60 * 60);
+
+
+        if (hoursPassed < 6) {
+
+            const remainingHours =
+                6 - hoursPassed;
+
+            const remainingMinutes =
+                Math.ceil(
+                    remainingHours * 60
+                );
+
+
+            document.getElementById(
+                "message"
+            ).textContent =
+                "⏳ You already reported this Kebele. Please try again in about " +
+                remainingMinutes +
+                " minutes.";
+
+            document.getElementById(
+                "message"
+            ).className =
                 "message error";
 
             return;
         }
-
-
-        reports = data || [];
-
-        displayKebeles();
-
     }
 
 
-    // ==========================================
-    // SUBMIT REPORT
-    // ==========================================
+    const button =
+        document.getElementById(
+            "submitButton"
+        );
 
-    async function submitReport() {
-
-        const kebele =
-            document.getElementById(
-                "kebeleSelect"
-            ).value;
-
-
-        const status =
-            document.getElementById(
-                "statusSelect"
-            ).value;
+    const message =
+        document.getElementById(
+            "message"
+        );
 
 
-        const button =
-            document.getElementById(
-                "submitButton"
-            );
+    button.disabled = true;
+
+    button.textContent =
+        "Submitting...";
 
 
-        const message =
-            document.getElementById(
-                "message"
-            );
+    /*
+      Save report
+    */
+
+    const {
+        error
+    } = await supabaseClient
+
+        .from("reports")
+
+        .insert({
+            kebele: kebele,
+            status: status
+        });
 
 
-        button.disabled = true;
+    if (error) {
 
-        button.textContent =
-            "Submitting...";
+        console.error(error);
+
+        message.textContent =
+            "❌ Report could not be submitted.";
+
+        message.className =
+            "message error";
+
+    } else {
+
+        /*
+          Save local 6-hour timer
+        */
+
+        localStorage.setItem(
+            "lastReport_" + kebele,
+            Date.now().toString()
+        );
 
 
-        const {
-            error
-        } = await supabaseClient
-            .from("reports")
-            .insert({
+        message.textContent =
+            "✅ Your report has been recorded.";
 
-                kebele: kebele,
-
-                status: status
-
-            });
+        message.className =
+            "message";
 
 
-        if (error) {
+        await loadReports();
+    }
 
-            console.error(error);
 
-            message.textContent =
-                "❌ Report could not be submitted.";
+    button.disabled = false;
 
-            message.className =
-                "message error";
+    button.textContent =
+        "Submit Report";
+}
 
-        } else {
 
-            message.textContent =
-                "✅ Your report has been recorded.";
+/* ---------------------------
+   REALTIME UPDATES
+---------------------------- */
 
-            message.className =
-                "message";
+supabaseClient
 
-            await loadReports();
+    .channel(
+        "reports-realtime"
+    )
 
+    .on(
+        "postgres_changes",
+        {
+            event: "*",
+            schema: "public",
+            table: "reports"
+        },
+
+        function() {
+            loadReports();
         }
+    )
+
+    .subscribe();
 
 
-        button.disabled = false;
+/* ---------------------------
+   START
+---------------------------- */
 
-        button.textContent =
-            "Submit Report";
+displayKebeles();
 
-    }
-
-
-    // ==========================================
-    // REAL-TIME UPDATES
-    // ==========================================
-
-    supabaseClient
-        .channel("reports-realtime")
-        .on(
-            "postgres_changes",
-            {
-                event: "*",
-                schema: "public",
-                table: "reports"
-            },
-            function () {
-
-                loadReports();
-
-            }
-        )
-        .subscribe();
-
-
-    // ==========================================
-    // START WEBSITE
-    // ==========================================
-
-    displayKebeles();
-
-    loadReports();
+loadReports();
 
 </script>
 
