@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Jijiga Electricity | Admin Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f7f6;
+    color: #17201d;
+}
+
+header {
+    background: #123c2f;
+    color: white;
+    padding: 22px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 25px;
+}
+
+header p {
+    margin: 7px 0 0;
+    opacity: 0.85;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 18px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+}
+
+.login-box {
+    max-width: 450px;
+    margin: 50px auto;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    margin: 8px 0;
+    border: 1px solid #ccd6d2;
+    border-radius: 9px;
+    font-size: 15px;
+}
+
+button {
+    border: none;
+    border-radius: 9px;
+    padding: 12px 17px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.login-btn {
+    width: 100%;
+    background: #176b50;
+    color: white;
+    margin-top: 8px;
+}
+
+.logout-btn {
+    background: #8b2f2f;
+    color: white;
+}
+
+.refresh-btn {
+    background: #176b50;
+    color: white;
+}
+
+.status-btn {
+    margin: 4px 3px;
+    background: #e9efec;
+    color: #173d31;
+}
+
+.status-btn:hover {
+    background: #d9e5df;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+}
+
+.stat strong {
+    display: block;
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.report {
+    border: 1px solid #e2e8e5;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.kebele {
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.badge-off {
+    background: #fde2e2;
+    color: #a51d1d;
+}
+
+.badge-on {
+    background: #dcf7e9;
+    color: #167044;
+}
+
+.badge-unstable {
+    background: #fff0c9;
+    color: #856404;
+}
+
+.badge-reported {
+    background: #fde2e2;
+    color: #a51d1d;
+}
+
+.badge-investigating {
+    background: #fff0c9;
+    color: #856404;
+}
+
+.badge-restored {
+    background: #dcf7e9;
+    color: #167044;
+}
+
+.small {
+    color: #6b7772;
+    font-size: 13px;
+    margin-top: 7px;
+}
+
+.actions {
+    margin-top: 14px;
+}
+
+.message {
+    padding: 12px;
+    border-radius: 9px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+.error {
+    background: #fde2e2;
+    color: #9b1c1c;
+}
+
+.success {
+    background: #dcf7e9;
+    color: #176b50;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        align-items: stretch;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>⚡ Jijiga Electricity</h1>
+    <p>Administration Dashboard</p>
+</header>
+
+<div class="container">
+
+    <!-- LOGIN -->
+    <div id="loginSection" class="card login-box">
+
+        <h2>Admin Login</h2>
+
+        <p class="small">
+            Authorized access only.
+        </p>
+
+        <div id="loginMessage" class="message"></div>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Admin email"
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
+
+        <button class="login-btn" onclick="login()">
+            Login
+        </button>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+    <div id="dashboardSection" class="hidden">
+
+        <div class="card">
+
+            <div class="topbar">
+
+                <div>
+                    <h2 style="margin:0;">Electricity Reports</h2>
+
+                    <div class="small">
+                        Monitor community reports and update their resolution status.
+                    </div>
+                </div>
+
+                <div>
+                    <button class="refresh-btn" onclick="loadReports()">
+                        🔄 Refresh
+                    </button>
+
+                    <button class="logout-btn" onclick="logout()">
+                        Logout
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="stats">
+
+            <div class="stat">
+                <strong id="reportedCount">0</strong>
+                Reported
+            </div>
+
+            <div class="stat">
+                <strong id="investigatingCount">0</strong>
+                Investigating
+            </div>
+
+            <div class="stat">
+                <strong id="restoredCount">0</strong>
+                Restored
+            </div>
+
+        </div>
+
+
+        <div id="dashboardMessage" class="message"></div>
+
+        <div id="reportsContainer"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+    "https://wvenavpgdlbrlqpnqjlb.supabase.co";
+
+const SUPABASE_ANON_KEY =
+    "sb_publishable_4utSOBVLpg1hPvXb9GtkzA_c9_bUxcu";
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+
+async function login() {
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    showLoginMessage("", "");
+
+    if (!email || !password) {
+
+        showLoginMessage(
+            "Please enter your email and password.",
+            "error"
+        );
+
+        return;
+    }
+
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+    if (error) {
+
+        showLoginMessage(
+            error.message,
+            "error"
+        );
+
+        return;
+    }
+
+    showDashboard();
+
+}
+
+
+async function logout() {
+
+    await supabaseClient.auth.signOut();
+
+    document
+        .getElementById("dashboardSection")
+        .classList.add("hidden");
+
+    document
+        .getElementById("loginSection")
+        .classList.remove("hidden");
+
+}
+
+
+async function checkSession() {
+
+    const { data } =
+        await supabaseClient.auth.getSession();
+
+    if (data.session) {
+
+        showDashboard();
+
+    }
+
+}
+
+
+function showDashboard() {
+
+    document
+        .getElementById("loginSection")
+        .classList.add("hidden");
+
+    document
+        .getElementById("dashboardSection")
+        .classList.remove("hidden");
+
+    loadReports();
+
+}
+
+
+function showLoginMessage(message, type) {
+
+    const box =
+        document.getElementById("loginMessage");
+
+    if (!message) {
+
+        box.style.display = "none";
+        box.textContent = "";
+
+        return;
+    }
+
+    box.textContent = message;
+
+    box.className =
+        "message " + type;
+
+    box.style.display = "block";
+
+}
+
+
+function showDashboardMessage(message, type) {
+
+    const box =
+        document.getElementById("dashboardMessage");
+
+    if (!message) {
+
+        box.style.display = "none";
+        box.textContent = "";
+
+        return;
+    }
+
+    box.textContent = message;
+
+    box.className =
+        "message " + type;
+
+    box.style.display = "block";
+
+}
+
+
+function statusBadge(status) {
+
+    if (status === "OFF") {
+
+        return `
+            <span class="badge badge-off">
+                🔴 OFF
+            </span>
+        `;
+
+    }
+
+    if (status === "ON") {
+
+        return `
+            <span class="badge badge-on">
+                🟢 ON
+            </span>
+        `;
+
+    }
+
+    if (status === "UNSTABLE") {
+
+        return `
+            <span class="badge badge-unstable">
+                🟡 UNSTABLE
+            </span>
+        `;
+
+    }
+
+    return `
+        <span class="badge">
+            ${status}
+        </span>
+    `;
+
+}
+
+
+function resolutionBadge(status) {
+
+    if (status === "Reported") {
+
+        return `
+            <span class="badge badge-reported">
+                🔴 Reported
+            </span>
+        `;
+
+    }
+
+    if (status === "Investigating") {
+
+        return `
+            <span class="badge badge-investigating">
+                🟠 Investigating
+            </span>
+        `;
+
+    }
+
+    if (status === "Restored") {
+
+        return `
+            <span class="badge badge-restored">
+                🟢 Restored
+            </span>
+        `;
+
+    }
+
+    return `
+        <span class="badge">
+            ${status || "Reported"}
+        </span>
+    `;
+
+}
+
+
+function formatTime(dateString) {
+
+    if (!dateString) {
+        return "Unknown";
+    }
+
+    return new Intl.DateTimeFormat(
+        "en-US",
+        {
+            timeZone: "Africa/Addis_Ababa",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true
+        }
+    ).format(new Date(dateString)) + " (EAT)";
+
+}
+
+
+async function loadReports() {
+
+    showDashboardMessage("", "");
+
+    const { data, error } =
+        await supabaseClient
+            .from("reports")
+            .select("*")
+            .order("created_at", {
+                ascending: false
+            });
+
+    if (error) {
+
+        showDashboardMessage(
+            error.message,
+            "error"
+        );
+
+        return;
+    }
+
+    const reports = data || [];
+
+    updateCounts(reports);
+
+    const container =
+        document.getElementById("reportsContainer");
+
+    if (reports.length === 0) {
+
+        container.innerHTML = `
+            <div class="card">
+                No reports found.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML =
+        reports.map(report => {
+
+            const resolution =
+                report.resolution_status ||
+                "Reported";
+
+            return `
+
+                <div class="report">
+
+                    <div class="report-header">
+
+                        <div>
+
+                            <div class="kebele">
+                                ${escapeHtml(report.kebele)}
+                            </div>
+
+                            <div style="margin-top:8px;">
+                                ${statusBadge(
+                                    escapeHtml(report.status)
+                                )}
+                                &nbsp;
+                                ${resolutionBadge(resolution)}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="small">
+                        🕐 ${formatTime(report.created_at)}
+                    </div>
+
+                    <div class="small">
+                        🆔 ${escapeHtml(report.id)}
+                    </div>
+
+                    <div class="actions">
+
+                        ${
+                            resolution !== "Investigating"
+                            ? `
+                                <button
+                                    class="status-btn"
+                                    onclick="updateResolution(
+                                        '${report.id}',
+                                        'Investigating'
+                                    )"
+                                >
+                                    🔍 Start Investigation
+                                </button>
+                            `
+                            : ""
+                        }
+
+                        ${
+                            resolution !== "Restored"
+                            ? `
+                                <button
+                                    class="status-btn"
+                                    onclick="updateResolution(
+                                        '${report.id}',
+                                        'Restored'
+                                    )"
+                                >
+                                    ✅ Mark Restored
+                                </button>
+                            `
+                            : ""
+                        }
+
+                        ${
+                            resolution !== "Reported"
+                            ? `
+                                <button
+                                    class="status-btn"
+                                    onclick="updateResolution(
+                                        '${report.id}',
+                                        'Reported'
+                                    )"
+                                >
+                                    ↩️ Reopen Report
+                                </button>
+                            `
+                            : ""
+                        }
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+}
+
+
+function updateCounts(reports) {
+
+    let reported = 0;
+    let investigating = 0;
+    let restored = 0;
+
+    reports.forEach(report => {
+
+        const status =
+            report.resolution_status ||
+            "Reported";
+
+        if (status === "Reported") {
+            reported++;
+        }
+
+        if (status === "Investigating") {
+            investigating++;
+        }
+
+        if (status === "Restored") {
+            restored++;
+        }
+
+    });
+
+    document.getElementById("reportedCount")
+        .textContent = reported;
+
+    document.getElementById("investigatingCount")
+        .textContent = investigating;
+
+    document.getElementById("restoredCount")
+        .textContent = restored;
+
+}
+
+
+async function updateResolution(id, newStatus) {
+
+    const { error } =
+        await supabaseClient
+            .from("reports")
+            .update({
+                resolution_status: newStatus
+            })
+            .eq("id", id);
+
+    if (error) {
+
+        showDashboardMessage(
+            error.message,
+            "error"
+        );
+
+        return;
+    }
+
+    showDashboardMessage(
+        "Report updated successfully.",
+        "success"
+    );
+
+    await loadReports();
+
+}
+
+
+function escapeHtml(value) {
+
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+checkSession();
+
+</script>
+
+</body>
+</html>
