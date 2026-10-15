@@ -758,6 +758,80 @@ function updateCounts(reports) {
 
 async function updateResolution(id, newStatus) {
 
+    // First, find the report so we know which Kebele it belongs to
+    const { data: report, error: reportError } =
+        await supabaseClient
+            .from("reports")
+            .select("kebele")
+            .eq("id", id)
+            .single();
+
+    if (reportError) {
+
+        showDashboardMessage(
+            reportError.message,
+            "error"
+        );
+
+        return;
+    }
+
+    // Update the report's resolution status
+    const { error: resolutionError } =
+        await supabaseClient
+            .from("reports")
+            .update({
+                resolution_status: newStatus
+            })
+            .eq("id", id);
+
+    if (resolutionError) {
+
+        showDashboardMessage(
+            resolutionError.message,
+            "error"
+        );
+
+        return;
+    }
+
+    // If the report is marked as RESTORED,
+    // update the current Kebele electricity status to ON
+    if (newStatus === "Restored") {
+
+        const { error: statusError } =
+            await supabaseClient
+                .from("kebele_status")
+                .upsert(
+                    {
+                        kebele: report.kebele,
+                        status: "ON",
+                        updated_at: new Date().toISOString()
+                    },
+                    {
+                        onConflict: "kebele"
+                    }
+                );
+
+        if (statusError) {
+
+            showDashboardMessage(
+                statusError.message,
+                "error"
+            );
+
+            return;
+        }
+    }
+
+    showDashboardMessage(
+        "Report updated successfully.",
+        "success"
+    );
+
+    await loadReports();
+} {
+
     const { error } =
         await supabaseClient
             .from("reports")
