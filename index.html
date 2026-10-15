@@ -183,16 +183,28 @@ input {
     color: var(--green-dark);
 }
 
+/* LANGUAGE */
+
 .language-area {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 6px;
+    justify-content: center;
+    gap: 5px;
 }
 
 .language-label {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--gray);
     font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.language-buttons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .language-button {
@@ -1269,6 +1281,23 @@ footer a {
     font-size: 11px;
 }
 
+.footer-founder {
+    margin-bottom: 12px;
+    color: rgba(255,255,255,0.85);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.footer-founder strong {
+    display: block;
+    color: white;
+    font-size: 14px;
+}
+
+.footer-founder span {
+    color: rgba(255,255,255,0.68);
+}
+
 /* =========================
    MOBILE
 ========================= */
@@ -1314,7 +1343,7 @@ footer a {
     }
 
     .language-label {
-        display: none;
+        display: block;
     }
 
     .stats-grid {
@@ -1395,6 +1424,20 @@ footer a {
     .contact-card {
         padding: 27px;
     }
+
+    .language-area {
+        margin-left: auto;
+        margin-right: 4px;
+    }
+
+    .language-label {
+        font-size: 10px;
+    }
+
+    .language-button {
+        padding: 6px 9px;
+        font-size: 11px;
+    }
 }
 
 </style>
@@ -1459,19 +1502,23 @@ footer a {
                 Choose your language:
             </span>
 
-            <button
-                class="language-button active"
-                id="englishButton"
-                onclick="setLanguage('en')">
-                English
-            </button>
+            <div class="language-buttons">
 
-            <button
-                class="language-button"
-                id="somaliButton"
-                onclick="setLanguage('so')">
-                Soomaali
-            </button>
+                <button
+                    class="language-button active"
+                    id="englishButton"
+                    onclick="setLanguage('en')">
+                    English
+                </button>
+
+                <button
+                    class="language-button"
+                    id="somaliButton"
+                    onclick="setLanguage('so')">
+                    Somali
+                </button>
+
+            </div>
 
         </div>
 
@@ -2480,7 +2527,14 @@ footer a {
 
         <div class="footer-bottom" id="footerBottom">
 
-            © 2026 Jijiga Electricity • Community information project
+            <div class="footer-founder">
+                <strong>Eng. Ahmed Abdirashid Mohamed</strong>
+                <span>Founder & Community Energy Advocate</span>
+            </div>
+
+            <div>
+                © 2026 Ahmed Abdirashid Mohamed. All rights reserved.
+            </div>
 
         </div>
 
@@ -2833,7 +2887,7 @@ const translations = {
             "Contact",
 
         footerBottom:
-            "© 2026 Jijiga Electricity • Community information project",
+            "© 2026 Ahmed Abdirashid Mohamed. All rights reserved.",
 
         lastUpdated:
             "Last updated: ",
@@ -3185,7 +3239,7 @@ const translations = {
             "Xiriir",
 
         footerBottom:
-            "© 2026 Jijiga Electricity • Mashruuca macluumaadka bulshada",
+            "© 2026 Ahmed Abdirashid Mohamed. Dhammaan xuquuqdu way dhowran yihiin.",
 
         lastUpdated:
             "Markii ugu dambeysay ee la cusbooneysiiyay: ",
@@ -3467,7 +3521,7 @@ function statusIcon(status) {
         return "⚠️";
     }
 
-    return "❔";
+    return "❓";
 
 }
 
