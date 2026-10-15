@@ -834,10 +834,47 @@ L.tileLayer(
     }
 ).addTo(map);
 
-L.marker([9.3500, 42.8000])
-    .addTo(map)
-    .bindPopup("📍 Jijiga City")
-    .openPopup();
+
+/* Real Ethiopia Kebele boundaries */
+fetch(
+    "https://services8.arcgis.com/oTalEaSXAuyNT7xf/arcgis/rest/services/Ethiopia_AdminBoundaries/FeatureServer/0/query?where=R_NAME%3D%27Somali%27&outFields=*&returnGeometry=true&outSR=4326&f=geojson"
+)
+.then(response => response.json())
+.then(data => {
+
+    L.geoJSON(data, {
+
+        style: {
+            color: "#0b5d4b",
+            weight: 1,
+            fillOpacity: 0.08
+        },
+
+        onEachFeature: function(feature, layer) {
+
+            const name =
+                feature.properties.KK_NAME ||
+                feature.properties.UK_NAME ||
+                "Kebele";
+
+            layer.bindPopup(
+                "<strong>" +
+                name +
+                "</strong><br>" +
+                "Jijiga Electricity"
+            );
+
+        }
+
+    }).addTo(map);
+
+})
+.catch(error => {
+    console.error(
+        "Could not load Kebele boundaries:",
+        error
+    );
+});
 displayKebeles();
 
 loadReports();
