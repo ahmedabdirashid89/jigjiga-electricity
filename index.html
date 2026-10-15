@@ -830,6 +830,205 @@ const map = L.map("map").setView(
 L.tileLayer(
     "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     {
+        attribution: "&copy; OpenStreetMap contributors"
+    }
+).addTo(map);
+
+
+/*
+   Load Kebele boundaries around Jijiga/Fafan
+   and connect them to recent electricity reports.
+*/
+
+const sixHoursAgo =
+    Date.now() - (6 * 60 * 60 * 1000);
+
+
+function getKebeleStatus(kebeleName) {
+
+    const recentReports =
+        reports.filter(report => {
+
+            return (
+                report.kebele === kebeleName &&
+                new Date(report.created_at).getTime()
+                    >= sixHoursAgo
+            );
+
+        });
+
+
+    if (recentReports.length === 0) {
+        return {
+            status: "unknown",
+            count: 0
+        };
+    }
+
+
+    const latest =
+        recentReports[
+            recentReports.length - 1
+        ];
+
+
+    return {
+        status: latest.status,
+        count: recentReports.length
+    };
+}
+
+
+function getMapColor(status) {
+
+    if (status === "on") {
+        return "#16803c";
+    }
+
+    if (status === "off") {
+        return "#c62828";
+    }
+
+    if (status === "unstable") {
+        return "#b77900";
+    }
+
+    return "#667085";
+}
+
+
+function getMapText(status) {
+
+    if (status === "on") {
+        return "🟢 ON";
+    }
+
+    if (status === "off") {
+        return "🔴 OFF";
+    }
+
+    if (status === "unstable") {
+        return "🟡 UNSTABLE";
+    }
+
+    return "⚪ UNKNOWN";
+}
+
+
+/*
+   Jijiga/Fafan Kebele polygons.
+*/
+
+const query =
+    "R_NAME='Somali' AND W_NAME='Fafan'";
+
+
+const url =
+    "https://services8.arcgis.com/oTalEaSXAuyNT7xf/arcgis/rest/services/Ethiopia_AdminBoundaries/FeatureServer/0/query" +
+    "?where=" +
+    encodeURIComponent(query) +
+    "&outFields=R_NAME,W_NAME,UK_NAME,KK_NAME" +
+    "&returnGeometry=true" +
+    "&outSR=4326" +
+    "&f=geojson";
+
+
+fetch(url)
+
+.then(response => response.json())
+
+.then(data => {
+
+    L.geoJSON(data, {
+
+        style: function(feature) {
+
+            const name =
+                feature.properties.KK_NAME ||
+                feature.properties.UK_NAME ||
+                "Unknown Kebele";
+
+
+            const result =
+                getKebeleStatus(name);
+
+
+            return {
+
+                color:
+                    getMapColor(
+                        result.status
+                    ),
+
+                weight: 2,
+
+                fillColor:
+                    getMapColor(
+                        result.status
+                    ),
+
+                fillOpacity: 0.35
+
+            };
+
+        },
+
+
+        onEachFeature:
+            function(feature, layer) {
+
+                const name =
+                    feature.properties.KK_NAME ||
+                    feature.properties.UK_NAME ||
+                    "Unknown Kebele";
+
+
+                const result =
+                    getKebeleStatus(name);
+
+
+                layer.bindPopup(
+
+                    "<strong>" +
+                    name +
+                    "</strong><br><br>" +
+
+                    getMapText(
+                        result.status
+                    ) +
+
+                    "<br>" +
+
+                    result.count +
+
+                    " recent " +
+
+                    (
+                        result.count === 1
+                            ? "report"
+                            : "reports"
+                    )
+
+                );
+
+            }
+
+    }).addTo(map);
+
+})
+
+
+.catch(error => {
+
+    console.error(
+        "Could not load Jijiga boundaries:",
+        error
+    );
+
+});
+L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
         attribution: '&copy; OpenStreetMap contributors'
     }
 ).addTo(map);
