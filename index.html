@@ -223,7 +223,10 @@ footer {
         <strong id="unknownCount">20</strong>
     </div>
 </div>
-
+<div class="panel">
+    <h2>🗺️ Jijiga Electricity Map</h2>
+    <div id="map" style="height:400px;border-radius:12px;"></div>
+</div>
 <div class="panel">
 
     <h2>🗺️ Jijiga Urban Kebeles</h2>
@@ -265,7 +268,14 @@ footer {
 <footer>
     Jijiga Electricity © 2026
 </footer>
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
 
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
@@ -812,7 +822,22 @@ supabaseClient
 /* ---------------------------
    START
 ---------------------------- */
+const map = L.map("map").setView(
+    [9.3500, 42.8000],
+    13
+);
 
+L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+        attribution: '&copy; OpenStreetMap contributors'
+    }
+).addTo(map);
+
+L.marker([9.3500, 42.8000])
+    .addTo(map)
+    .bindPopup("📍 Jijiga City")
+    .openPopup();
 displayKebeles();
 
 loadReports();
